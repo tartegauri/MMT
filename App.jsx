@@ -21,6 +21,10 @@ import SelectDessert from './src/screens/plans/SelectDessert';
 import SpecialVegThali from './src/screens/KitchenResult/components/SpecialVegThali';
 import MessScreen from './src/screens/mess';
 import NormalVegThali from './src/screens/KitchenResult/components/NormalVegThali';
+import Home from './src/screens/Home';
+import ActivePlans from './src/screens/Home/components/ActivePlans';
+import PersonalDetails from './src/screens/Home/components/PersonalDetails';
+import  Settings  from './src/screens/Home/components/Settings';
 
 const Stack = createStackNavigator();
 
@@ -114,6 +118,27 @@ export default function App() {
             name="NormalVegThali"
             component={NormalVegThali}
           />
+           <Stack.Screen
+            options={{ headerShown: false }}
+            name="Home"
+            component={Home}
+          />
+           <Stack.Screen
+            options={{ headerShown: false }}
+            name="ActivePlans"
+            component={ActivePlans}
+          />
+           <Stack.Screen
+            options={{ headerShown: false }}
+            name="PersonalDetails"
+            component={PersonalDetails}
+          />
+  <Stack.Screen
+            options={{ headerShown: false }}
+            name="Settings"
+            component={Settings}
+          />
+
         </Stack.Navigator>
       </NavigationContainer>
     </ThemeProvider>

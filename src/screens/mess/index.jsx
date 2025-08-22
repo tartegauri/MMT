@@ -91,7 +91,8 @@ const MessScreen = () => {
                 a touch of home — light on oil, big on comfort.
               </Text>
             </View>
-            <TouchableOpacity style={styles.knowMoreBtn}>
+            <TouchableOpacity style={styles.knowMoreBtn} 
+               onPress={() => navigation.navigate('Home')}>
               <Text style={styles.knowMoreText}>
                 want to know more about the mess
               </Text>
