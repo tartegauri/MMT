@@ -34,7 +34,7 @@ const ShareScreen = ({ navigation }) => {
         <View style={styles.topSection}>
           {/* Background Image */}
           <Image
-            source={require('E:/tartegauri30/MMTApp/src/assets/onboardingImg.jpg')}
+            source={require('D:/Programming/Navsudh/MMT/MMT/src/assets/onboardingImg.jpg')}
             style={styles.backgroundImage}
             resizeMode="cover"
           />

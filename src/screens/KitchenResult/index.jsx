@@ -3,13 +3,13 @@ import { View, Text, StyleSheet, Image, Dimensions, TouchableOpacity, Animated }
 import { useTheme } from '../../context/ThemeContext';
 import Button from '../../components/common/Button';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import userStore from '../../store/userStore';
 const { width } = Dimensions.get('window');
 const IMAGE_SIZE = width * 0.72; // Bigger thali image
 
 const KitchenResult = ({ navigation }) => {
   const { colors } = useTheme();
-  const userName = 'Tabish';
+  const userName =userStore.getState().name;
 
   // Animation refs
   const cardAnim = useRef(new Animated.Value(0)).current;

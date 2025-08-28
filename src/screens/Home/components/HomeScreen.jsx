@@ -34,7 +34,7 @@ const HomeScreen = ({ navigation }) => {
         <View style={styles.topSection}>
           {/* Background Image */}
           <Image
-            source={require('E:/tartegauri30/MMTApp/src/assets/onboardingImg.jpg')}
+            source={require('D:/Programming/Navsudh/MMT/MMT/src/assets/onboardingImg.jpg')}
             style={styles.backgroundImage}
             resizeMode="cover"
           />
@@ -71,7 +71,7 @@ const HomeScreen = ({ navigation }) => {
             <View style={styles.bannerContainer}>
               {/* Replace text with image */}
               <Image
-                source={require('E:/tartegauri30/MMTApp/src/assets/HomeImage.png')}
+                source={require('D:/Programming/Navsudh/MMT/MMT/src/assets/HomeImage.png')}
                 style={styles.bannerImage}
                 resizeMode="contain"
               />
@@ -129,7 +129,7 @@ const HomeScreen = ({ navigation }) => {
                 <View style={styles.thaliContent}>
                   {/* Left side - Image */}
                   <Image
-                    source={require('E:/tartegauri30/MMTApp/src/assets/thali.png')}
+                    source={require('D:/Programming/Navsudh/MMT/MMT/src/assets/thali.png')}
                     style={styles.thaliImage}
                     resizeMode="cover"
                   />
@@ -199,7 +199,7 @@ const HomeScreen = ({ navigation }) => {
               {/* Background Image */}
               <View style={styles.messImageContainer}>
                 <Image
-                  source={require('E:/tartegauri30/MMTApp/src/assets/onboardingImg.jpg')}
+                  source={require('D:/Programming/Navsudh/MMT/MMT/src/assets/onboardingImg.jpg')}
                   style={styles.messImageCentered}
                   resizeMode="cover"
                 />
