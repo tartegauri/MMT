@@ -3,15 +3,15 @@ import { View, Text, StyleSheet, Image, Dimensions, TouchableOpacity, Animated }
 import { useTheme } from '../../context/ThemeContext';
 import Button from '../../components/common/Button';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { fontSizes, fonts } from '../../styles/styles';
 import userStore from '../../store/userStore';
 const { width } = Dimensions.get('window');
-const IMAGE_SIZE = width * 0.72; // Bigger thali image
+const IMAGE_SIZE = width * 0.72;
 
 const KitchenResult = ({ navigation }) => {
   const { colors } = useTheme();
   const userName =userStore.getState().name;
 
-  // Animation refs
   const cardAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -28,61 +28,39 @@ const KitchenResult = ({ navigation }) => {
   });
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>  
-      {/* Location Row */}
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={styles.locationRow}>
         <Ionicons name="location-sharp" size={18} color={colors.textPrimary} style={styles.locationIcon} />
-        <Text style={[styles.locationText, { color: colors.textPrimary }]}>Ominx mall, Office 212, Magarpatta.</Text>
+        <Text style={[styles.locationText, { color: colors.textPrimary, fontFamily: fonts.semiBold, fontSize: fontSizes.label }]}>Ominx mall, Office 212, Magarpatta.</Text>
       </View>
 
-      {/* Greeting */}
-      <Text style={[styles.heading, { color: colors.textPrimary }]}>Just for you, {userName}</Text>
-      <Text style={styles.subheading}>We found a thali from kitchen that matches your taste and vibe.</Text>
+      <Text style={[styles.heading, { color: colors.textPrimary, fontFamily: fonts.bold, fontSize: fontSizes.title }]}>Just for you, {userName}</Text>
+      <Text style={[styles.subheading, { fontFamily: fonts.semiBold, fontSize: fontSizes.subtitle }]}>We found a thali from kitchen that matches your taste and vibe.</Text>
 
-      {/* Thali Image & Card */}
-      <Animated.View
-        style={[
-          styles.centeredCardWrapper,
-          {
-            opacity: cardAnim,
-            transform: [{ translateY }],
-          },
-        ]}
-      >
-        <Image
-          source={require('../../assets/thali.png')}
-          style={styles.thaliImage}
-          resizeMode="cover"
-        />
+      <Animated.View style={[styles.centeredCardWrapper, { opacity: cardAnim, transform: [{ translateY }] }]}>
+        <Image source={require('../../assets/thali.png')} style={styles.thaliImage} resizeMode="cover" />
         <View style={styles.card}>
-          <Text style={[styles.kitchenName, { color: colors.textPrimary }]}>Dehwar mess</Text>
+          <Text style={[styles.kitchenName, { color: colors.textPrimary, fontFamily: fonts.bold, fontSize: fontSizes.subtitle }]}>Dehwar mess</Text>
           <View style={styles.row}>
-            <Text style={styles.kitchenDetails}>Home Chef | Pause Anytime | </Text>
+            <Text style={[styles.kitchenDetails, { fontFamily: fonts.semiBold, fontSize: fontSizes.label }]}>Home Chef | Pause Anytime | </Text>
             <Image source={require('../../assets/fssai.png')} style={styles.fssaiLogo} resizeMode="contain" />
           </View>
-          <Text style={styles.kitchenDesc}>
+          <Text style={[styles.kitchenDesc, { fontFamily: fonts.semiBold, fontSize: fontSizes.label }]}>
             Every tiffin from Dehwar's Mess brings soft rotis, fresh dal, and a touch of home — light on oil, big on comfort.
           </Text>
           <View style={styles.badge}>
-            <Text style={styles.badgeText}>Special Veg Thali</Text>
+            <Text style={[styles.badgeText, { fontFamily: fonts.bold }]}>Special Veg Thali</Text>
           </View>
         </View>
       </Animated.View>
 
-      {/* Action Buttons */}
       <View style={styles.buttonRow}>
         <Button text="Select" style={styles.selectBtn} onPress={() => navigation.navigate('SpecialVegThali')} />
-        <Button
-          text="Explore other"
-          style={styles.exploreBtn}
-          textStyle={styles.exploreBtnText}
-          onPress={() => {navigation.navigate('MessScreen')}}
-        />
+        <Button text="Explore other" style={styles.exploreBtn} textStyle={styles.exploreBtnText} onPress={() => navigation.navigate('MessScreen')} />
       </View>
 
-      {/* Skip Link */}
       <TouchableOpacity style={styles.skipContainer}>
-        <Text style={styles.skipText}>skip</Text>
+        <Text style={[styles.skipText, { fontFamily: fonts.semiBold, fontSize: fontSizes.label }]}>skip</Text>
       </TouchableOpacity>
     </View>
   );
@@ -97,7 +75,7 @@ const styles = StyleSheet.create({
   locationRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop:70, // less space
+    marginTop: 70,
   },
   locationIcon: {
     width: 18,
@@ -105,24 +83,24 @@ const styles = StyleSheet.create({
     marginRight: 6,
   },
   locationText: {
-    fontSize: 15, // bigger
+    fontSize: 15,
     fontWeight: '600',
   },
   heading: {
-    fontSize: 24, // bigger
+    fontSize: 24,
     fontWeight: '800',
-    marginTop: 24, // less space
+    marginTop: 24,
     marginBottom: 0,
   },
   subheading: {
-    fontSize: 16, // bigger
+    fontSize: 16,
     color: '#555',
-    marginBottom: 8, // less space
+    marginBottom: 8,
     fontWeight: '500',
   },
   centeredCardWrapper: {
     alignItems: 'center',
-    marginTop: 150, // much less space
+    marginTop: 150,
     position: 'relative',
   },
   thaliImage: {
@@ -141,9 +119,9 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: '#fff',
     borderRadius: 20,
-    padding: 18, // more compact
+    padding: 18,
     paddingTop: IMAGE_SIZE / 2 + 18,
-    minHeight: 340, // shorter card
+    minHeight: 340,
     width: width - 40,
     elevation: 4,
     shadowColor: '#000',
@@ -153,7 +131,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   kitchenName: {
-    fontSize: 20, // bigger
+    fontSize: 20,
     fontWeight: '800',
     marginBottom: 4,
     textAlign: 'left',
@@ -161,10 +139,10 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 4, // less space
+    marginBottom: 4,
   },
   kitchenDetails: {
-    fontSize: 15, // bigger
+    fontSize: 15,
     color: '#666',
     textAlign: 'left',
     fontWeight: '600',
@@ -174,10 +152,10 @@ const styles = StyleSheet.create({
     height: 18,
   },
   kitchenDesc: {
-    fontSize: 15, // bigger
+    fontSize: 15,
     color: '#444',
     textAlign: 'left',
-    marginBottom: 10, // less space
+    marginBottom: 10,
     fontWeight: '500',
   },
   badge: {
@@ -186,18 +164,18 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 8,
     alignSelf: 'center',
-    marginTop: 4, // less space
+    marginTop: 4,
   },
   badgeText: {
     color: '#fff',
     fontWeight: 'bold',
-    fontSize: 16, // bigger
+    fontSize: 16,
   },
   buttonRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     gap: 12,
-    marginTop: 70, // less space
+    marginTop: 70,
   },
   selectBtn: {
     flex: 1,
@@ -220,10 +198,10 @@ const styles = StyleSheet.create({
   },
   skipContainer: {
     alignItems: 'center',
-    marginTop: 8, // less space
+    marginTop: 8,
   },
   skipText: {
-    fontSize: 15, // bigger
+    fontSize: 15,
     color: '#777',
     fontWeight: '600',
   },

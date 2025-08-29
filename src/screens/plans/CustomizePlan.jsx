@@ -8,13 +8,13 @@ import {
   Animated,
   TouchableOpacity,
   Dimensions,
-  StyleSheet,
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useTheme } from '../../context/ThemeContext';
 import Button from '../../components/common/Button';
+import { fontSizes, spacing } from '../../styles/styles';
 
-const { width, height } = Dimensions.get('window');
+const { height } = Dimensions.get('window');
 
 const CustomizePlan = ({ navigation }) => {
   const { colors } = useTheme();
@@ -49,37 +49,76 @@ const CustomizePlan = ({ navigation }) => {
           style={{ width: '100%', height: '120%', position: 'absolute', top: -height * 0.08 }}
           resizeMode="cover"
         />
-        <TouchableOpacity style={{ position: 'absolute', top: 40, left: 20, zIndex: 10, backgroundColor: 'rgba(0,0,0,0.3)', padding: 6, borderRadius: 999 }} onPress={() => navigation.goBack()}>
+        <TouchableOpacity
+          style={{
+            position: 'absolute',
+            top: 40,
+            left: 20,
+            zIndex: 10,
+            backgroundColor: 'rgba(0,0,0,0.3)',
+            padding: 6,
+            borderRadius: 999,
+          }}
+          onPress={() => navigation.goBack()}
+        >
           <AntDesign name="arrowleft" size={24} color="#fff" />
         </TouchableOpacity>
       </View>
       {/* White card overlays bottom half */}
-      <View style={{
-        position: 'absolute',
-        top: height * 0.35,
-        left: 0,
-        width: '100%',
-        height: height * 0.65,
-        backgroundColor: colors.secondary,
-        borderTopLeftRadius: 40,
-        borderTopRightRadius: 40,
-        paddingHorizontal: 24,
-        paddingTop: 32,
-        zIndex: 2,
-      }}>
+      <View
+        style={{
+          position: 'absolute',
+          top: height * 0.35,
+          left: 0,
+          width: '100%',
+          height: height * 0.65,
+          backgroundColor: colors.secondary,
+          borderTopLeftRadius: 40,
+          borderTopRightRadius: 40,
+          paddingHorizontal: 24,
+          paddingTop: 32,
+          zIndex: 2,
+        }}
+      >
         <Animated.View style={{ opacity: fadeAnim, transform: [{ translateY: translateYAnim }] }}>
-          <Text style={{ fontSize: 22, fontWeight: '700', color: colors.textPrimary, marginBottom: 2 }}>
+          <Text
+            style={{
+              fontSize: fontSizes.title,
+              fontWeight: '700',
+              color: colors.textPrimary,
+              marginBottom: spacing.small / 2,
+            }}
+          >
             {userName}
           </Text>
-          <Text style={{ fontSize: 15, color: colors.textPrimary, opacity: 0.8, fontWeight: '400', marginBottom: 12 }}>
+          <Text
+            style={{
+              fontSize: fontSizes.label,
+              color: colors.textPrimary,
+              opacity: 0.8,
+              fontWeight: '400',
+              marginBottom: spacing.medium,
+            }}
+          >
             Please Select your meal times
           </Text>
           {/* Note badge */}
-          <View style={{ alignSelf: 'flex-start', backgroundColor: '#F9C7B8', borderRadius: 16, paddingHorizontal: 14, paddingVertical: 4, marginBottom: 18 }}>
-            <Text style={{ color: '#B85B3B', fontSize: 13, fontWeight: '500' }}>Note: You Can Change Your Preferences Any Time</Text>
+          <View
+            style={{
+              alignSelf: 'flex-start',
+              backgroundColor: '#F9C7B8',
+              borderRadius: 16,
+              paddingHorizontal: 14,
+              paddingVertical: 4,
+              marginBottom: spacing.medium,
+            }}
+          >
+            <Text style={{ color: '#B85B3B', fontSize: 13, fontWeight: '500' }}>
+              Note: You Can Change Your Preferences Any Time
+            </Text>
           </View>
           {/* Meal Cards */}
-          <View style={{ gap: 16, marginBottom: 18 }}>
+          <View style={{ gap: 16, marginBottom: spacing.medium }}>
             {/* Lunch Card */}
             <TouchableOpacity
               activeOpacity={0.8}
@@ -99,7 +138,7 @@ const CustomizePlan = ({ navigation }) => {
                 minHeight: 64,
               }}
             >
-              {/* Day Illustration (using backgroundImg.png) */}
+              {/* Day Illustration */}
               <View style={{ width: 64, height: 64, justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
                 <Image
                   source={require('../../assets/backgroundImg.png')}
@@ -108,12 +147,11 @@ const CustomizePlan = ({ navigation }) => {
                 />
               </View>
               <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', paddingLeft: 16 }}>
-                <Text style={{ fontSize: 26, fontWeight: '700', color: '#FFFFF', flex: 1 }}>Lunch</Text>
+                <Text style={{ fontSize: 26, fontWeight: '700', color: '#000', flex: 1 }}>Lunch</Text>
                 <View style={{ marginRight: 16 }}>
-                  {lunchChecked && (
+                  {lunchChecked ? (
                     <AntDesign name="checksquare" size={26} color="#FF6F3C" />
-                  )}
-                  {!lunchChecked && (
+                  ) : (
                     <AntDesign name="border" size={26} color="#B0B0B0" />
                   )}
                 </View>
@@ -138,7 +176,7 @@ const CustomizePlan = ({ navigation }) => {
                 minHeight: 64,
               }}
             >
-              {/* Night Illustration (using backgroundImg.png) */}
+              {/* Night Illustration */}
               <View style={{ width: 64, height: 64, justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
                 <Image
                   source={require('../../assets/backgroundImg.png')}
@@ -147,12 +185,11 @@ const CustomizePlan = ({ navigation }) => {
                 />
               </View>
               <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', paddingLeft: 16 }}>
-                <Text style={{ fontSize: 26, fontWeight: '700', color: '#FFFFF', flex: 1 }}>Dinner</Text>
+                <Text style={{ fontSize: 26, fontWeight: '700', color: '#000', flex: 1 }}>Dinner</Text>
                 <View style={{ marginRight: 16 }}>
-                  {dinnerChecked && (
+                  {dinnerChecked ? (
                     <AntDesign name="checksquare" size={26} color="#FF6F3C" />
-                  )}
-                  {!dinnerChecked && (
+                  ) : (
                     <AntDesign name="border" size={26} color="#B0B0B0" />
                   )}
                 </View>
@@ -160,21 +197,29 @@ const CustomizePlan = ({ navigation }) => {
             </TouchableOpacity>
           </View>
           {/* Percentage text */}
-          <Text style={{ textAlign: 'center', color: colors.textPrimary, fontSize: 16, fontWeight: '400', marginBottom: 32 }}>
+          <Text
+            style={{
+              textAlign: 'center',
+              color: colors.textPrimary,
+              fontSize: fontSizes.subtitle,
+              fontWeight: '400',
+              marginBottom: spacing.large,
+            }}
+          >
             95.2% people select both!
           </Text>
           {/* Continue Button */}
           <Button
             text="Continue"
-            onPress={() => {navigation.navigate("SelectDuration")}}
+            onPress={() => navigation.navigate('SelectDuration')}
             style={{
               backgroundColor: '#FF6F3C',
               borderRadius: 30,
               height: 56,
-              marginTop: 65,
+              marginTop: spacing.xLarge || 65,
               marginBottom: 0,
             }}
-            textStyle={{ color: '#fff', fontWeight: '600', fontSize: 17 }}
+            textStyle={{ color: '#fff', fontWeight: '600', fontSize: fontSizes.button }}
           />
         </Animated.View>
       </View>

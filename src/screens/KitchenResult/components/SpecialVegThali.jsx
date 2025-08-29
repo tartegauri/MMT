@@ -2,11 +2,13 @@ import React, { useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, Dimensions, TouchableOpacity, Animated } from 'react-native';
 import { useTheme } from '../../../context/ThemeContext';
 import Button from '../../../components/common/Button';
+import { fontSizes, fonts } from '../../../styles/styles';
 
 const { width } = Dimensions.get('window');
 const ITEM_IMAGE = 90;
 const CARD_RADIUS = 16;
 const CARD_HEIGHT = 88;
+
 const foodItems = [
   {
     name: '3 Chapatis',
@@ -65,13 +67,13 @@ const SpecialVegThali = ({ navigation }) => {
   }, [animatedValues]);
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>  
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Text style={styles.backText}>back</Text>
+        <Text style={[styles.backText, { fontFamily: fonts.semiBold, fontSize: fontSizes.button }]}>back</Text>
       </TouchableOpacity>
-      <Text style={styles.heading}>Special Veg Thali</Text>
-      <Text style={styles.subheading}>
-        Every tiffin from Dehwar's Mess brings soft rotis, fresh dal, and a touch of home — light on oil, big on comfort.
+      <Text style={[styles.heading, { fontFamily: fonts.bold, fontSize: fontSizes.title }]}>Special Veg Thali</Text>
+      <Text style={[styles.subheading, { fontFamily: fonts.semiBold, fontSize: fontSizes.subtitle }]}>
+        Every tiffin from Dehwar&apos;s Mess brings soft rotis, fresh dal, and a touch of home — light on oil, big on comfort.
       </Text>
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         {foodItems.map((item, idx) => {
@@ -93,12 +95,12 @@ const SpecialVegThali = ({ navigation }) => {
               <Image source={require('../../../assets/backgroundImg.png')} style={styles.foodImg} />
               <View style={styles.cardContent}>
                 <View style={styles.cardTitleRow}>
-                  <Text style={styles.foodName}>{item.name}</Text>
-                  <Text style={styles.foodDesc}>{item.desc}</Text>
-                  <Text style={styles.foodQty}>{item.qty}</Text>
+                  <Text style={[styles.foodName, { fontFamily: fonts.bold, fontSize: 19 }]}>{item.name}</Text>
+                  <Text style={[styles.foodDesc, { fontFamily: fonts.semiBold, fontSize: 15 }]}>{item.desc}</Text>
+                  <Text style={[styles.foodQty, { fontFamily: fonts.semiBold, fontSize: 15 }]}>{item.qty}</Text>
                 </View>
-                <Text style={styles.nutrition}>Fats : {item.fats}</Text>
-                <Text style={styles.nutrition}>Carbs : {item.carbs}</Text>
+                <Text style={[styles.nutrition, { fontFamily: fonts.semiBold, fontSize: 15 }]}>Fats : {item.fats}</Text>
+                <Text style={[styles.nutrition, { fontFamily: fonts.semiBold, fontSize: 15 }]}>Carbs : {item.carbs}</Text>
               </View>
             </Animated.View>
           );

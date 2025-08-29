@@ -147,10 +147,10 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useTheme } from '../../../context/ThemeContext';
 import Button from '../../../components/common/Button';
 import Input from '../../../components/common/Input';
+import { fontSizes, spacing } from '../../../styles/styles';
 import userStore from '../../../store/userStore';
 import useAuth from '../../../services/useAuth';
 import { useMutation } from '@tanstack/react-query';
-
 
 const LoginName = ({ navigation, route }) => {
   const { colors } = useTheme();
@@ -205,33 +205,78 @@ const LoginName = ({ navigation, route }) => {
           style={{ width: '100%', height: '100%' }}
         />
         <TouchableOpacity
-          style={{ position: 'absolute', top: 40, left: 20, zIndex: 10, backgroundColor: 'rgba(0,0,0,0.3)', padding: 6, borderRadius: 999 }}
+          style={{
+            position: 'absolute',
+            top: 40,
+            left: 20,
+            zIndex: 10,
+            backgroundColor: 'rgba(0,0,0,0.3)',
+            padding: 6,
+            borderRadius: 999,
+          }}
           onPress={() => navigation.goBack()}
         >
           <AntDesign name="arrowleft" size={24} color="#fff" />
         </TouchableOpacity>
       </View>
       {/* Card */}
-      <View style={{
-        flex: 1,
-        backgroundColor: colors.secondary,
-        marginTop: -40,
-        borderTopLeftRadius: 32,
-        borderTopRightRadius: 32,
-        paddingHorizontal: 24,
-        paddingTop: 40,
-      }}>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: colors.secondary,
+          marginTop: -40,
+          borderTopLeftRadius: 32,
+          borderTopRightRadius: 32,
+          paddingHorizontal: 24,
+          paddingTop: 40,
+        }}
+      >
         <Animated.View style={{ opacity: fadeAnim, transform: [{ translateY: translateYAnim }] }}>
-          <Text style={{ fontSize: 22, fontWeight: '700', color: colors.textPrimary, marginBottom: 8 }}>
+          <Text
+            style={{
+              fontSize: fontSizes.title,
+              fontWeight: '700',
+              color: colors.textPrimary,
+              marginBottom: 8,
+            }}
+          >
             Every tiffin has a name on it…
           </Text>
-          <Text style={{ fontSize: 15, color: colors.textPrimary, opacity: 0.7, fontWeight: '400', marginBottom: 28 }}>
+          <Text
+            style={{
+              fontSize: fontSizes.subtitle,
+              color: colors.textPrimary,
+              opacity: 0.7,
+              fontWeight: '400',
+              marginBottom: 28,
+            }}
+          >
             What should she write on yours?
           </Text>
           <View style={{ width: '100%', marginBottom: 24 }}>
-            <Text style={{ fontSize: 15, fontWeight: '700', marginBottom: 8, color: colors.textPrimary, textAlign: 'left' }}>Name</Text>
+            <Text
+              style={{
+                fontSize: fontSizes.label,
+                fontWeight: '700',
+                marginBottom: 8,
+                color: colors.textPrimary,
+                textAlign: 'left',
+              }}
+            >
+              Name
+            </Text>
             <Input
-              style={{ width: '100%', backgroundColor: '#EDEDED', borderRadius: 28, paddingHorizontal: 18, fontSize: 17, color: '#222', height: 56, textAlign: 'left', marginBottom: 0 }}
+              style={{
+                width: '100%',
+                backgroundColor: '#EDEDED',
+                borderRadius: 28,
+                paddingHorizontal: 18,
+                fontSize: fontSizes.button,
+                color: '#222',
+                height: 56,
+                textAlign: 'left',
+                marginBottom: 0,
+              }}
               placeholder="Tabish Khan"
               placeholderTextColor="#B0B0B0"
               value={name}
@@ -242,7 +287,7 @@ const LoginName = ({ navigation, route }) => {
             text="Continue"
             onPress={handleSubmit}
             disabled={!isNameFilled}
-            style={{ marginBottom: 16, height: 56, borderRadius: 28 }}
+            style={{ marginBottom: spacing.medium, height: 56, borderRadius: 28 }}
           />
         </Animated.View>
       </View>

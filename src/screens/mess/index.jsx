@@ -14,6 +14,7 @@ import { useTheme } from '../../context/ThemeContext';
 import Button from '../../components/common/Button';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { fontSizes, fonts } from '../../styles/styles';
 
 const { width } = Dimensions.get('window');
 
@@ -64,36 +65,28 @@ const MessScreen = () => {
           transform: [{ translateY: pageTranslateY }],
         }}
       >
-        <ScrollView
-          contentContainerStyle={styles.scrollContent}
-          showsVerticalScrollIndicator={false}
-        >
+        <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
           {/* Banner Image */}
-          <Image
-            source={require('../../assets/foodImg.png')}
-            style={styles.headerImage}
-          />
+          <Image source={require('../../assets/foodImg.png')} style={styles.headerImage} />
 
           {/* Mess Card */}
           <View style={styles.messCard}>
             <View style={styles.messCardContent}>
               <View style={styles.messTitleRow}>
-                <Text style={styles.messName}>Dehwar mess</Text>
-                <Image
-                  source={require('../../assets/fssai.png')}
-                  style={styles.fssaiLogo}
-                  resizeMode="contain"
-                />
+                <Text style={[styles.messName, { fontFamily: fonts.semiBold, fontSize: fontSizes.subtitle, color: '#222' }]}>
+                  Dehwar mess
+                </Text>
+                <Image source={require('../../assets/fssai.png')} style={styles.fssaiLogo} resizeMode="contain" />
               </View>
-              <Text style={styles.messDetails}>Home Chef | Pause Anytime</Text>
-              <Text style={styles.messDesc}>
-                Every tiffin from Dehwar's Mess brings soft rotis, fresh dal, and
-                a touch of home — light on oil, big on comfort.
+              <Text style={[styles.messDetails, { fontFamily: fonts.semiBold, fontSize: fontSizes.label, color: '#666' }]}>
+                Home Chef | Pause Anytime
+              </Text>
+              <Text style={[styles.messDesc, { fontFamily: fonts.semiBold, fontSize: fontSizes.label, color: '#444' }]}>
+                Every tiffin from Dehwar's Mess brings soft rotis, fresh dal, and a touch of home — light on oil, big on comfort.
               </Text>
             </View>
-            <TouchableOpacity style={styles.knowMoreBtn} 
-               onPress={() => navigation.navigate('Home')}>
-              <Text style={styles.knowMoreText}>
+            <TouchableOpacity style={styles.knowMoreBtn} onPress={() => navigation.navigate('Home')}>
+              <Text style={[styles.knowMoreText, { fontFamily: fonts.semiBold, fontSize: fontSizes.subtitle }]}>
                 want to know more about the mess
               </Text>
             </TouchableOpacity>
@@ -101,7 +94,7 @@ const MessScreen = () => {
 
           {/* Thali Options */}
           <View style={styles.thaliHeaderRow}>
-            <Text style={styles.thaliHeaderText}>Thali Options</Text>
+            <Text style={[styles.thaliHeaderText, { fontFamily: fonts.bold, fontSize: fontSizes.subtitle }]}>Thali Options</Text>
             <View style={styles.thaliHeaderLine} />
           </View>
 
@@ -118,14 +111,15 @@ const MessScreen = () => {
               activeOpacity={0.9}
             >
               <View style={{ position: 'relative', borderRadius: 20, overflow: 'hidden' }}>
-                <Image
-                  source={require('../../assets/Vector.png')}
-                  style={styles.thaliImage}
-                />
+                <Image source={require('../../assets/Vector.png')} style={styles.thaliImage} />
               </View>
               <View style={styles.thaliTextBelow}>
-                <Text style={styles.thaliTitle}>Normal Veg Thali</Text>
-                <Text style={styles.thaliSubtitle}>3 Chapatis, 1 Sabji Dal & Rice</Text>
+                <Text style={[styles.thaliTitle, { fontFamily: fonts.bold, fontSize: fontSizes.subtitle }]}>Normal Veg Thali</Text>
+                <Text
+                  style={[styles.thaliSubtitle, { fontFamily: fonts.semiBold, fontSize: 11 }] /* smaller font size inline here */}
+                >
+                  3 Chapatis, 1 Sabji Dal & Rice
+                </Text>
               </View>
               <View style={styles.thaliArrowCircle}>
                 <AntDesign name="arrowright" size={24} color="#FF6F3C" />
@@ -146,14 +140,15 @@ const MessScreen = () => {
               activeOpacity={0.9}
             >
               <View style={{ position: 'relative', borderRadius: 20, overflow: 'hidden' }}>
-                <Image
-                  source={require('../../assets/Vector.png')}
-                  style={styles.thaliImage}
-                />
+                <Image source={require('../../assets/Vector.png')} style={styles.thaliImage} />
               </View>
               <View style={styles.thaliTextBelow}>
-                <Text style={styles.thaliTitle}>Special Veg Thali</Text>
-                <Text style={styles.thaliSubtitle}>4 Chapatis, 2 Sabjis, Dessert</Text>
+                <Text style={[styles.thaliTitle, { fontFamily: fonts.bold, fontSize: fontSizes.subtitle }]}>Special Veg Thali</Text>
+                <Text
+                  style={[styles.thaliSubtitle, { fontFamily: fonts.semiBold, fontSize: 11 }] /* smaller font size inline here */}
+                >
+                  4 Chapatis, 2 Sabjis, Dessert
+                </Text>
               </View>
               <View style={styles.thaliArrowCircle}>
                 <AntDesign name="arrowright" size={24} color="#FF6F3C" />
@@ -163,7 +158,7 @@ const MessScreen = () => {
 
           {/* Available Plans */}
           <View style={styles.plansHeaderRow}>
-            <Text style={styles.plansHeaderText}>Available Plans</Text>
+            <Text style={[styles.plansHeaderText, { fontFamily: fonts.bold, fontSize: fontSizes.subtitle }]}>Available Plans</Text>
             <View style={styles.plansHeaderLine} />
           </View>
           {plans.map(plan => (
@@ -178,8 +173,8 @@ const MessScreen = () => {
             >
               <View style={styles.planRow}>
                 <View style={styles.planLeft}>
-                  <Text style={styles.planName}>{plan.title}</Text>
-                  <Text style={styles.planPrice}>{plan.price}</Text>
+                  <Text style={[styles.planName, { fontFamily: fonts.bold, fontSize: 20 }]}>{plan.title}</Text>
+                  <Text style={[styles.planPrice, { fontFamily: fonts.semiBold, fontSize: 16 }]}>{plan.price}</Text>
                 </View>
                 <View style={styles.planRight}>
                   {plan.details.map((line, idx) => (
@@ -190,7 +185,9 @@ const MessScreen = () => {
                         color={colors.primary}
                         style={styles.planTickIcon}
                       />
-                      <Text style={styles.planDetail}>{line}</Text>
+                      <Text style={[styles.planDetail, { fontFamily: fonts.semiBold, fontSize: 14 }]}>
+                        {line}
+                      </Text>
                     </View>
                   ))}
                 </View>
@@ -198,7 +195,7 @@ const MessScreen = () => {
             </TouchableOpacity>
           ))}
 
-          <Text style={styles.selectText}>Select any one</Text>
+          <Text style={[styles.selectText, { fontFamily: fonts.semiBold, fontSize: 13 }]}>Select any one</Text>
           <Button
             text="Proceed"
             style={styles.proceedBtn}
@@ -303,14 +300,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     textAlign: 'center',
   },
-  sectionHeader: {
-    fontSize: 15,
-    fontWeight: '700',
-    color: '#222',
-    marginVertical: 10,
-  },
-
-  // ✅ Thali Card Styles (Updated)
   thaliCard: {
     backgroundColor: '#fff',
     borderRadius: 20,
@@ -325,41 +314,27 @@ const styles = StyleSheet.create({
     height: 160,
     resizeMode: 'cover',
   },
-  thaliOverlay: {
-    position: 'absolute',
-    left: 0,
-    bottom: 0,
-    width: '100%',
-    height: 80, // Adjust this to match the PNG's height in your design
-    resizeMode: 'stretch', // or 'contain' if you want to preserve aspect ratio
-    zIndex: 2,
-  },
-  thaliTextOverlay: {
-    position: 'absolute',
-    bottom: 16,
-    left: 0,
-    width: '55%', // or whatever fits the empty space
-    paddingVertical: 10,
+  thaliTextBelow: {
+    paddingVertical: 2,
     paddingHorizontal: 14,
-    borderTopRightRadius: 16,
-    borderBottomLeftRadius: 20,
-    borderTopLeftRadius: 20,
-    zIndex: 2,
+    alignItems: 'flex-start',
+    backgroundColor: 'transparent',
+    marginTop: -58,
   },
   thaliTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#111',
-    marginTop: 14
+    marginTop: 14,
   },
   thaliSubtitle: {
-    fontSize: 13,
+    fontSize: 15, // original size replaced inline where used
     color: '#555',
     marginTop: 2,
   },
   thaliArrowCircle: {
     position: 'absolute',
-    top: 16, // Changed from '50%' to 16 for better positioning
+    top: 16,
     right: 16,
     width: 44,
     height: 44,
@@ -373,14 +348,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 4,
   },
-  thaliTextBelow: {
-    paddingVertical: 2,
-    paddingHorizontal: 14,
-    alignItems: 'flex-start',
-    backgroundColor: 'transparent',
-    marginTop: -58,
-  },
-
   plansHeaderRow: {
     flexDirection: 'row',
     alignItems: 'center',

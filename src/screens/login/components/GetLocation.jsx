@@ -16,6 +16,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useTheme } from '../../../context/ThemeContext';
 import Button from '../../../components/common/Button';
 import LinearGradient from 'react-native-linear-gradient';
+import { fontSizes, spacing } from '../../../styles/styles';
 import Geolocation from '@react-native-community/geolocation';
 import {
   request,
@@ -31,11 +32,9 @@ const { height } = Dimensions.get('window');
 const GetLocation = ({ navigation, route }) => {
   const { colors } = useTheme();
   const name = route?.params?.name || 'User';
-
   const [isRequestingPermission, setIsRequestingPermission] = useState(false);
   const [permissionStatus, setPermissionStatus] = useState(null);
   const [fetchedCoords, setFetchedCoords] = useState(null); 
-
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const translateYAnim = useRef(new Animated.Value(40)).current;
 
@@ -203,8 +202,6 @@ const GetLocation = ({ navigation, route }) => {
           <AntDesign name="arrowleft" size={24} color="#fff" />
         </TouchableOpacity>
       </View>
-
-      {/* Bottom card */}
       <View
         style={{
           flex: 1,
@@ -217,11 +214,27 @@ const GetLocation = ({ navigation, route }) => {
         }}
       >
         <Animated.View style={{ opacity: fadeAnim, transform: [{ translateY: translateYAnim }] }}>
-          <Text style={{ fontSize: 24, fontWeight: '700', color: colors.textPrimary }}>
+          <Text
+            style={{
+              fontSize: fontSizes.title + 2, // Slightly larger for greeting
+              fontWeight: '700',
+              color: colors.textPrimary,
+              marginBottom: 0,
+            }}
+          >
             Hi, {name}
           </Text>
-          <Text style={{ fontSize: 16, color: colors.textPrimary, opacity: 0.7, marginBottom: 40 }}>
-            where should we deliver your tiffin? 📍
+          <Text
+            style={{
+              fontSize: fontSizes.subtitle,
+              color: colors.textPrimary,
+              opacity: 0.7,
+              fontWeight: '400',
+              marginBottom: spacing.large * 1.25,
+              marginTop: 0,
+            }}
+          >
+            where should we deliver your tiffin? <Text>📍</Text>
           </Text>
 
           <Button
@@ -229,7 +242,7 @@ const GetLocation = ({ navigation, route }) => {
             onPress={handleUseCurrentLocation}
             disabled={isRequestingPermission}
             style={{
-              marginBottom: 18,
+              marginBottom: spacing.medium,
               height: 56,
               borderRadius: 28,
               backgroundColor: isRequestingPermission ? '#cccccc' : colors.primary,
@@ -240,7 +253,7 @@ const GetLocation = ({ navigation, route }) => {
             text="Enter Manually"
             onPress={handleEnterManually}
             style={{
-              marginBottom: 16,
+              marginBottom: spacing.medium,
               height: 56,
               borderRadius: 28,
               backgroundColor: '#FFA891',

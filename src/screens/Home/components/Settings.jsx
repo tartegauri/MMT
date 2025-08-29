@@ -9,10 +9,10 @@ import {
   TouchableOpacity,
   Modal,
   Pressable,
-  Dimensions,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { fontSizes, fonts } from '../../../styles/styles';
 
 // Custom Switch as before
 const CustomSwitch = ({ value, onValueChange }) => {
@@ -91,18 +91,15 @@ const Settings = ({ navigation }) => {
             activeOpacity={0.8}
             onPress={() => setLangModalVisible(true)}
           >
-            <Text style={styles.label}>Language</Text>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={styles.languageText}>
-                {LANGUAGES.find((l) => l.value === selectedLang).label}
-              </Text>
-              <Icon
-                name="chevron-forward-outline"
-                size={21}
-                color="#B3B3B3"
-                style={{ marginLeft: 3, marginTop: 1 }}
-              />
-            </View>
+            <Text style={styles.languageText}>
+              {LANGUAGES.find((l) => l.value === selectedLang).label}
+            </Text>
+            <Icon
+              name="chevron-forward-outline"
+              size={21}
+              color="#B3B3B3"
+              style={{ marginLeft: 3, marginTop: 1 }}
+            />
           </TouchableOpacity>
         </View>
         {/* Language Bottom Drawer */}
@@ -142,7 +139,7 @@ const BottomSheetLanguageModal = ({
         <View style={styles.bottomSheetDragLine} />
         <Text style={styles.bottomSheetTitle}>Select Language</Text>
         <View style={{ marginTop: 16, marginHorizontal: 14 }}>
-          {LANGUAGES.map((lang, idx) => {
+          {LANGUAGES.map((lang) => {
             const isSelected = tempLang === lang.value;
             return (
               <TouchableOpacity
@@ -219,7 +216,8 @@ const styles = StyleSheet.create({
   headerText: {
     color: '#fff',
     fontWeight: 'bold',
-    fontSize: 19,
+    fontSize: fontSizes.title,
+    fontFamily: fonts.bold,
     marginLeft: 14,
   },
   section: {
@@ -232,7 +230,8 @@ const styles = StyleSheet.create({
     marginBottom: 2,
     color: '#BDBDBD',
     fontWeight: 'bold',
-    fontSize: 13,
+    fontSize: fontSizes.label,
+    fontFamily: fonts.semiBold,
     letterSpacing: 0.22,
     textTransform: 'uppercase',
   },
@@ -245,16 +244,18 @@ const styles = StyleSheet.create({
     minHeight: 36,
   },
   label: {
-    fontSize: 15.5,
+    fontSize: fontSizes.input,
     color: '#171717',
     fontWeight: '400',
+    fontFamily: fonts.regular,
     letterSpacing: 0.1,
   },
   languageText: {
     color: '#1A1A1A',
-    fontSize: 15.5,
+    fontSize: fontSizes.input,
     marginRight: 6,
     fontWeight: '500',
+    fontFamily: fonts.semiBold,
   },
   customSwitch: {
     width: SWITCH_WIDTH,
@@ -306,7 +307,8 @@ const styles = StyleSheet.create({
   bottomSheetTitle: {
     marginLeft: 22,
     fontWeight: 'bold',
-    fontSize: 18,
+    fontSize: fontSizes.subtitle,
+    fontFamily: fonts.semiBold,
     color: '#181818',
   },
   languageOption: {
@@ -325,7 +327,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   languageOptionLabel: {
-    fontSize: 16,
+    fontSize: fontSizes.input,
+    fontFamily: fonts.regular,
     color: '#181818',
   },
   bottomSheetSelectBtn: {
@@ -342,7 +345,8 @@ const styles = StyleSheet.create({
   bottomSheetSelectBtnText: {
     color: '#fff',
     fontWeight: 'bold',
-    fontSize: 18,
+    fontSize: fontSizes.title - 6,
+    fontFamily: fonts.semiBold,
     letterSpacing: 0.14,
   },
 });
