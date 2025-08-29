@@ -1,4 +1,4 @@
-const host = "http://192.168.29.102:5000";
+const host = "http://10.0.2.2:5000";
 
 export const API_URL = `${host}/api`;
 

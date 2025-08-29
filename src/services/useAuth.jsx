@@ -11,13 +11,16 @@ const useAuth = () => {
   };
 
   const addName = (data)=>{
-    console.log(data)
+    
     const response = axios.put(`${APIS.addName}/${data.phone}`,{name:data.name})
     console.log(response)
     return axios.put(`${APIS.addName}/${data.phone}`,{name:data.name})
   };
 
   const addAddress = (data) =>{
+    console.log(data);
+    const response = axios.put(`${APIS.addAddress}/${data.id}`,(data.data));
+    console.log(response);
     return axios.put(`${APIS.addAddress}/${data.id}`,(data.data))
   };
   return {

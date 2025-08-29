@@ -177,6 +177,7 @@ const saveOptions = [
 const ManualLocation = ({ navigation, route }) => {
   const { colors } = useTheme();
   const name = route?.params?.name || 'User';
+  const {longitude , latitude} = route?.params?.coordinates ;
   const hasLocationPermission = route?.params?.hasLocationPermission || false;
   
   const [house, setHouse] = useState('');
@@ -204,7 +205,6 @@ const ManualLocation = ({ navigation, route }) => {
     },
   });
 
-  // Fade-in + slide-up animation for card content
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const translateYAnim = useRef(new Animated.Value(40)).current;
 
@@ -225,7 +225,7 @@ const ManualLocation = ({ navigation, route }) => {
 
   const geocodeAddress = async (address) => {
     try {
-      const API_KEY = 'YOUR_GOOGLE_MAPS_API_KEY'; // replace with actual key
+      const API_KEY = 'AIzaSyBITKkVUJeuGElkxY9Ma9SVMx1yXLrJLUY'; 
       const encodedAddress = encodeURIComponent(address);
       const response = await fetch(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${encodedAddress}&key=${API_KEY}`
@@ -249,16 +249,15 @@ const ManualLocation = ({ navigation, route }) => {
     }
   };
 
-  // ✅ fixed: encapsulated submit logic here
   const submitAddress = (coordinates) => {
     const formData = {
-      id: userStore.getState().userId,
+      id: userStore.getState().phone,
       data: {
         line1: house,
         line2: apartment,
         instructions,
         tag: saveAs,
-        ...(coordinates && { coordinates })
+        coordinates: [longitude,latitude],
       }
     };
 
