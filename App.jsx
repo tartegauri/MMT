@@ -22,14 +22,20 @@ import SpecialVegThali from './src/screens/KitchenResult/components/SpecialVegTh
 import MessScreen from './src/screens/mess';
 import NormalVegThali from './src/screens/KitchenResult/components/NormalVegThali';
 import Home from './src/screens/Home';
+import MapLocation from './src/screens/login/components/geolocation/MapLocation';
 import ActivePlans from './src/screens/Home/components/ActivePlans';
 import PersonalDetails from './src/screens/Home/components/PersonalDetails';
 import  Settings  from './src/screens/Home/components/Settings';
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 
+
+const queryClient = new QueryClient();
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
+    <QueryClientProvider client={queryClient}>
+
     <ThemeProvider>
       <NavigationContainer>
         <Stack.Navigator>
@@ -68,11 +74,11 @@ export default function App() {
             name="ManualLocation"
             component={ManualLocation}
           />
-          {/* <Stack.Screen
+          <Stack.Screen
             options={{ headerShown: false }}
             name="PlanSelection"
             component={PlanSelection}
-          /> */}
+          />
           <Stack.Screen
             options={{ headerShown: false }}
             name="KitchenMatching"
@@ -82,42 +88,42 @@ export default function App() {
             options={{ headerShown: false }}
             name="KitchenResult"
             component={KitchenResult}
-          />
+            />
           <Stack.Screen
             options={{ headerShown: false }}
             name="SelectPlan"
             component={SelectPlan}
-          />
+            />
            <Stack.Screen
             options={{ headerShown: false }}
             name="CustomizedPlan"
             component={CustomizePlan}
-          />
+            />
            <Stack.Screen
             options={{ headerShown: false }}
             name="SelectDuration"
             component={SelectDuration}
-          />
+            />
            <Stack.Screen
             options={{ headerShown: false }}
             name="SelectDessert"
             component={SelectDessert}
-          />
+            />
            <Stack.Screen
             options={{ headerShown: false }}
             name="SpecialVegThali"
             component={SpecialVegThali}
-          />
+            />
            <Stack.Screen
             options={{ headerShown: false }}
             name="MessScreen"
             component={MessScreen}
-          />
+            />
            <Stack.Screen
             options={{ headerShown: false }}
             name="NormalVegThali"
             component={NormalVegThali}
-          />
+            />
            <Stack.Screen
             options={{ headerShown: false }}
             name="Home"
@@ -133,15 +139,20 @@ export default function App() {
             name="PersonalDetails"
             component={PersonalDetails}
           />
-  <Stack.Screen
+          <Stack.Screen
             options={{ headerShown: false }}
             name="Settings"
             component={Settings}
           />
-
+          <Stack.Screen 
+            name="MapLocation" 
+            component={MapLocation}
+            options={{ headerShown: false }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </ThemeProvider>
+  </QueryClientProvider>
   );
 }
 
@@ -150,11 +161,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#ffffff', // white background
+    backgroundColor: '#ffffff', 
   },
   text: {
     fontSize: 24,
-    color: '#000000', // black text
+    color: '#000000', 
     fontWeight: 'bold',
   },
 });

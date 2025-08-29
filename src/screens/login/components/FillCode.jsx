@@ -165,16 +165,41 @@ import { View, Text, TextInput, Image, SafeAreaView, StatusBar, Animated, Toucha
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useTheme } from '../../../context/ThemeContext';
 import Button from '../../../components/common/Button';
-
-const CODE_LENGTH = 4;
+import { useMutation } from '@tanstack/react-query';
+import useAuth from "../../../services/useAuth";
+import userStore from '../../../store/userStore';
+const CODE_LENGTH = 6;
 
 const FillCode = ({ navigation, route }) => {
   const { colors } = useTheme();
-  const [code, setCode] = useState(['', '', '', '']);
+  const [code, setCode] = useState(Array(CODE_LENGTH).fill(''));
   const [timer, setTimer] = useState(30);
   const inputRefs = useRef([]);
-  const phone = route?.params?.phone || '+91 726280585';
+  const phone = route?.params?.phone || '';
+  const email = route?.params?.email || '';
+  const { verifyOtp } = useAuth(); 
+  const mutation = useMutation({
+    mutationFn: verifyOtp,
+    onSuccess: async (responseData) => {
+      await userStore.getState().updateUser(responseData);
+      isCodeFilled && navigation.navigate('LoginName', { phone })
+    },
+    onError: (err) => {
+      console.error("Login failed:",err);
+      toast.error("Login failed. Please check your credentials.");
+    },
+  });
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = {
+      phone:phone.replace('+91', ''),
+      otp : code.join(''),
+      email:email,
+    };
+    console.log(formData)
+    mutation.mutate(formData);
+  };
   // Slide up + fade in animation for card content
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const translateYAnim = useRef(new Animated.Value(40)).current;
@@ -272,7 +297,7 @@ const FillCode = ({ navigation, route }) => {
           </View>
           <Button
             text="Confirm the number"
-            onPress={() => isCodeFilled && navigation.navigate('LoginName', { phone })}
+            onPress={handleSubmit}
             disabled={!isCodeFilled}
             style={{ marginBottom: 16, height: 60, borderRadius: 28 }}
           />

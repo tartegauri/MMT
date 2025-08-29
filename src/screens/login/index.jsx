@@ -8,15 +8,49 @@ import {
   Animated,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useMutation } from '@tanstack/react-query';
 import { useTheme } from '../../context/ThemeContext';
 import Button from '../../components/common/Button';
 import Input from '../../components/common/Input';
+import useAuth from '../../services/useAuth';
+import userStore from '../../store/userStore';
 
 const LoginScreen = ({ navigation }) => {
+  const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const { colors } = useTheme();
+  const { createUser } = useAuth(); 
+  const mutation = useMutation({
+    mutationFn: createUser,
+    onSuccess: async (user) => {
+      const responseData = {
+        userId: user.data.data.userId,
+        phone: user.data.data.phone,
+        role: user.data.data.role,
+        status: true,
+      };
+      
+      await userStore.getState().updateUser(responseData);
+          console.log('User Store State:', userStore.getState());
+      navigation.navigate('FillCode', { phone: '+91' + phone , email:email})
+    },
+    onError: (err) => {
+      console.error("Login failed:",err);
+      toast.error("Login failed. Please check your credentials.");
+    },
+  });
 
-  // Fade-in + slide-up animation for card content
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = {
+      phone:phone,
+      role : 'CUSTOMER',
+      email:email,
+    };
+    console.log(formData)
+    mutation.mutate(formData);
+  };
+
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const translateYAnim = useRef(new Animated.Value(40)).current;
 
@@ -41,7 +75,8 @@ const LoginScreen = ({ navigation }) => {
     setPhone(digits.slice(0, 10));
   };
 
-  const isValid = phone.length === 10;
+  const isValidEmail = (val) => /\S+@\S+\.\S+/.test(val);
+  const isValid = phone.length === 10 || isValidEmail(email);
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}> 
@@ -81,9 +116,31 @@ const LoginScreen = ({ navigation }) => {
             </View>
           </View>
 
+          {/* Email Input */}
+          <View style={styles.inputContainer}>
+            <Text style={[styles.label, { color: colors.textPrimary }]}>
+              Email
+            </Text>
+            <Input
+              style={{
+                backgroundColor: '#F3F3F3',
+                borderRadius: 30,
+                paddingLeft: 16,
+                color: colors.textPrimary,
+              }}
+              placeholder="Enter your email"
+              placeholderTextColor="#888"
+              keyboardType="email-address"
+              autoCapitalize="none"
+              value={email}
+              onChangeText={setEmail}
+              returnKeyType="done"
+            />
+          </View>
+
           <Button
             text="Get Code"
-            onPress={() => navigation.navigate('FillCode', { phone: '+91' + phone })}
+            onPress={handleSubmit}
             disabled={!isValid}
             style={{ marginTop: 8 }}
           />
