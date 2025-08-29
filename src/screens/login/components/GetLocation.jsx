@@ -1,214 +1,4 @@
-// import React, { useState, useRef, useEffect } from 'react';
-// import { View, Text, TouchableOpacity, StyleSheet, TextInput, Platform, PermissionsAndroid, Alert, Animated } from 'react-native';
-// import { useTheme } from '../../../context/ThemeContext';
-
-// const GetLocation = ({ navigation, route }) => {
-//   const { colors } = useTheme();
-//   const name = route?.params?.name || 'User';
-//   const [manual, setManual] = useState(false);
-//   const [address, setAddress] = useState('Shivaji nagar Pune');
-
-//   // Animation values
-//   const fadeAnim = useRef(new Animated.Value(0)).current;
-//   const translateYAnim = useRef(new Animated.Value(40)).current;
-
-//   useEffect(() => {
-//     Animated.parallel([
-//       Animated.timing(fadeAnim, {
-//         toValue: 1,
-//         duration: 600,
-//         useNativeDriver: true,
-//       }),
-//       Animated.timing(translateYAnim, {
-//         toValue: 0,
-//         duration: 600,
-//         useNativeDriver: true,
-//       }),
-//     ]).start();
-//   }, [fadeAnim, translateYAnim]);
-
-//   // Request location permission and get current location
-//   const handleCurrentLocation = async () => {
-//     try {
-//       if (Platform.OS === 'android') {
-//         const granted = await PermissionsAndroid.request(
-//           PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-//           {
-//             title: 'Location Permission',
-//             message: 'App needs access to your location to deliver your tiffin.',
-//             buttonNeutral: 'Ask Me Later',
-//             buttonNegative: 'Cancel',
-//             buttonPositive: 'OK',
-//           },
-//         );
-//         if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-//           Alert.alert('Permission Denied', 'Location permission is required to use this feature.');
-//           return;
-//         }
-//       }
-//       navigator.geolocation.getCurrentPosition(
-//         (position) => {
-//           Alert.alert('Location', `Lat: ${position.coords.latitude}, Lon: ${position.coords.longitude}`);
-//           // You can navigate or save the location here
-//         },
-//         (error) => {
-//           Alert.alert('Error', error.message);
-//         },
-//         { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
-//       );
-//     } catch (err) {
-//       Alert.alert('Error', err.message);
-//     }
-//   };
-
-//   return (
-//     <Animated.View style={{ flex: 1, backgroundColor: colors.background, opacity: fadeAnim, transform: [{ translateY: translateYAnim }] }}>
-//       <View style={[styles.container, { backgroundColor: colors.background }]}>  
-//         <View style={styles.backWrapper}>
-//           <TouchableOpacity onPress={() => navigation.goBack()}>
-//             <Text style={[styles.backText, { color: colors.textPrimary }]}>Back</Text>
-//           </TouchableOpacity>
-//         </View>
-//         <Text style={[styles.greeting, { color: colors.textPrimary }]}>Hi, <Text style={[styles.name, { color: colors.textPrimary }]}>{name}</Text></Text>
-//         <Text style={[styles.subtitle, { color: colors.textPrimary }]}>where should we deliver your meals? <Text style={styles.pin}>📍</Text></Text>
-//         {manual ? (
-//           <>
-//             <View style={styles.inputContainer}>
-//               <Text style={[styles.inputLabel, { color: colors.textPrimary }]}>Address</Text>
-//               <TextInput
-//                 style={[styles.input, { color: '#111' }]}
-//                 placeholder="Shivaji nagar Pune"
-//                 placeholderTextColor="#B0B0B0"
-//                 value={address}
-//                 onChangeText={setAddress}
-//               />
-//             </View>
-//             <TouchableOpacity style={styles.buttonNext}>
-//               <Text style={styles.buttonText}>Next</Text>
-//             </TouchableOpacity>
-//           </>
-//         ) : (
-//           <>
-//             <View style={{ width: '100%', marginTop: 300 }}>
-//               <TouchableOpacity style={[styles.buttonPrimary, { backgroundColor: colors.primary }]} onPress={() => setManual(true)}>
-//                 <Text style={styles.buttonText}>Use Current location</Text>
-//               </TouchableOpacity>
-//               <TouchableOpacity style={[styles.buttonPrimary, { backgroundColor: colors.primary }]} onPress={() => navigation.navigate('ManualLocation', { name })}>
-//                 <Text style={styles.buttonText}>Enter Manually</Text>
-//               </TouchableOpacity>
-//             </View>
-//           </>
-//         )}
-//       </View>
-//     </Animated.View>
-//   );
-// };
-
-// const COMMON_HEIGHT = 56;
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     alignItems: 'center',
-//     justifyContent: 'flex-start',
-//     paddingTop: 90,
-//     paddingHorizontal: 20,
-//     backgroundColor: '#FCFCFC',
-//   },
-//   backWrapper: {
-//     position: 'absolute',
-//     top: 40,
-//     left: 20,
-//     zIndex: 10,
-//   },
-//   backText: {
-//     color: '#888',
-//     fontSize: 16,
-//     fontWeight: '500',
-//   },
-//   greeting: {
-//     fontSize: 24,
-//     fontWeight: '700',
-//     color: '#111',
-//     textAlign: 'left',
-//     alignSelf: 'flex-start',
-//     marginTop: 90,
-//     marginBottom: 0,
-//   },
-//   name: {
-//     color: '#111',
-//     fontWeight: '700',
-//   },
-//   subtitle: {
-//     fontSize: 16,
-//     color: '#888',
-//     fontWeight: '400',
-//     marginBottom: 48,
-//     marginTop: 0,
-//     textAlign: 'left',
-//     alignSelf: 'flex-start',
-//   },
-//   pin: {
-//     fontSize: 16,
-//   },
-//   buttonPrimary: {
-//     width: '100%',
-//     borderRadius: 28,
-//     height: COMMON_HEIGHT,
-//     backgroundColor: '#F9541E',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     marginBottom: 18,
-  
-//   },
-//   buttonSecondary: {
-//     width: '100%',
-//     borderRadius: 28,
-//     height: COMMON_HEIGHT,
-//     backgroundColor: '#FFA891',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     marginBottom: 16,
-//   },
-//   buttonText: {
-//     color: '#fff',
-//     fontSize: 17,
-//     fontWeight: '600',
-//     textAlign: 'center',
-//   },
-//   inputContainer: {
-//     width: '100%',
-//     marginBottom: 20,
-//   },
-//   inputLabel: {
-//     fontSize: 16,
-//     color: '#333',
-//     marginBottom: 8,
-//     fontWeight: '500',
-//   },
-//   input: {
-//     width: '100%',
-//     height: COMMON_HEIGHT,
-//     borderRadius: 28,
-//     borderWidth: 1,
-//     borderColor: '#E0E0E0',
-//     paddingHorizontal: 20,
-//     fontSize: 16,
-//     color: '#333',
-//   },
-//   buttonNext: {
-//     width: '100%',
-//     borderRadius: 28,
-//     height: COMMON_HEIGHT,
-//     backgroundColor: '#F9541E',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     marginBottom: 16,
-//   },
-// });
-
-// export default GetLocation;
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -218,19 +8,33 @@ import {
   Dimensions,
   Animated,
   TouchableOpacity,
+  Alert,
+  Platform,
+  AppState,
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useTheme } from '../../../context/ThemeContext';
 import Button from '../../../components/common/Button';
 import LinearGradient from 'react-native-linear-gradient';
 import { fontSizes, spacing } from '../../../styles/styles';
+import Geolocation from '@react-native-community/geolocation';
+import {
+  request,
+  check,
+  PERMISSIONS,
+  RESULTS,
+  openSettings,
+} from 'react-native-permissions';
+import { useFocusEffect } from '@react-navigation/native';
 
 const { height } = Dimensions.get('window');
 
 const GetLocation = ({ navigation, route }) => {
   const { colors } = useTheme();
   const name = route?.params?.name || 'User';
-
+  const [isRequestingPermission, setIsRequestingPermission] = useState(false);
+  const [permissionStatus, setPermissionStatus] = useState(null);
+  const [fetchedCoords, setFetchedCoords] = useState(null); 
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const translateYAnim = useRef(new Animated.Value(40)).current;
 
@@ -247,13 +51,138 @@ const GetLocation = ({ navigation, route }) => {
         useNativeDriver: true,
       }),
     ]).start();
-  }, [fadeAnim, translateYAnim]);
+
+    initLocationOnMount();
+
+  }, [fetchedCoords]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      checkAndRequestPermissionIfNeeded();
+    }, [])
+  );
+
+  useEffect(() => {
+    const handleAppStateChange = (nextAppState) => {
+      if (nextAppState === 'active') {
+        checkAndRequestPermissionIfNeeded();
+      }
+    };
+    const subscription = AppState.addEventListener('change', handleAppStateChange);
+    return () => subscription?.remove();
+  }, []);
+
+  const getLocationPermission = () => {
+    return Platform.OS === 'ios'
+      ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
+      : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION;
+  };
+
+  const checkAndRequestPermissionIfNeeded = async () => {
+    try {
+      const permission = getLocationPermission();
+      const status = await check(permission);
+      setPermissionStatus(status);
+
+      if (status === RESULTS.GRANTED) {
+        return true;
+      } else {
+        return await requestLocationPermission();
+      }
+    } catch (error) {
+      console.error('❌ Permission check error:', error);
+      return false;
+    }
+  };
+
+  const requestLocationPermission = async () => {
+    try {
+      setIsRequestingPermission(true);
+      const permission = getLocationPermission();
+      const status = await request(permission);
+      setPermissionStatus(status);
+
+      if (status === RESULTS.GRANTED) {
+        return true;
+      } else if (status === RESULTS.BLOCKED) {
+        Alert.alert(
+          'Location Permission Blocked',
+          'Please enable location access in settings to continue.',
+          [
+            { text: 'Open Settings', onPress: openSettings },
+            { text: 'Cancel', style: 'cancel' },
+          ]
+        );
+      }
+      return false;
+    } catch (error) {
+      console.error('❌ Request permission error:', error);
+      return false;
+    } finally {
+      setIsRequestingPermission(false);
+    }
+  };
+
+  const getCurrentLocation = () => {
+    return new Promise((resolve, reject) => {
+      Geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          resolve({ latitude, longitude });
+        },
+        (error) => {
+          console.error('❌ Location error:', error);
+          reject(error);
+        },
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+      );
+    });
+  };
+
+  const initLocationOnMount = async () => {
+    const granted = await checkAndRequestPermissionIfNeeded();
+    if (!granted) return;
+    try {
+      const coords = await getCurrentLocation();
+      setFetchedCoords(coords);
+    } catch (error) {
+      console.warn('⚠️ Could not fetch initial location on mount:', error);
+    }
+  };
+
+  const handleUseCurrentLocation = async () => {
+    const granted = await checkAndRequestPermissionIfNeeded();
+    if (!granted) return;
+
+    try {
+      const coords = await getCurrentLocation();
+      navigation.navigate('MapLocation', {
+        name,
+        initialLocation: coords,
+      });
+    } catch (error) {
+      Alert.alert(
+        'Location Error',
+        'Unable to fetch your location. Try again or enter manually.',
+        [
+          { text: 'Retry', onPress: handleUseCurrentLocation },
+          { text: 'Enter Manually', onPress: () => navigation.navigate('ManualLocation', { name, coordinates: fetchedCoords }) },
+        ]
+      );
+    }
+  };
+
+  const handleEnterManually = () => {
+    
+    navigation.navigate('ManualLocation', { name, coordinates: fetchedCoords });
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
       <StatusBar barStyle={colors.background === '#101010' ? 'light-content' : 'dark-content'} />
-      {/* Top Image */}
-      <View style={{ height: 260, width: '100%', position: 'relative' }}>
+
+      {/* Header image */}
+      <View style={{ height: 260, width: '100%' }}>
         <Image
           source={require('../../../assets/backgroundImg.png')}
           style={{ width: '100%', height: '100%' }}
@@ -273,8 +202,6 @@ const GetLocation = ({ navigation, route }) => {
           <AntDesign name="arrowleft" size={24} color="#fff" />
         </TouchableOpacity>
       </View>
-
-      {/* Card */}
       <View
         style={{
           flex: 1,
@@ -311,19 +238,20 @@ const GetLocation = ({ navigation, route }) => {
           </Text>
 
           <Button
-            text="Use Current location"
-            onPress={() => {}}
+            text={isRequestingPermission ? 'Requesting Permission...' : 'Use Current Location'}
+            onPress={handleUseCurrentLocation}
+            disabled={isRequestingPermission}
             style={{
               marginBottom: spacing.medium,
               height: 56,
               borderRadius: 28,
-              backgroundColor: colors.primary,
+              backgroundColor: isRequestingPermission ? '#cccccc' : colors.primary,
             }}
           />
 
           <Button
             text="Enter Manually"
-            onPress={() => navigation.navigate('ManualLocation', { name })}
+            onPress={handleEnterManually}
             style={{
               marginBottom: spacing.medium,
               height: 56,
@@ -334,7 +262,6 @@ const GetLocation = ({ navigation, route }) => {
         </Animated.View>
       </View>
 
-      {/* Strong Orange Gradient at Bottom */}
       <LinearGradient
         colors={['transparent', '#FF6F3C']}
         start={{ x: 0.5, y: 0 }}
@@ -345,7 +272,6 @@ const GetLocation = ({ navigation, route }) => {
           right: 0,
           bottom: 0,
           height: height * 0.45,
-          zIndex: 1,
         }}
       />
     </SafeAreaView>

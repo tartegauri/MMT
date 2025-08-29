@@ -26,7 +26,6 @@ const KitchenMatching = ({ navigation }) => {
       ])
     ).start();
 
-    // Progress bar (JS driver only)
     progress.setValue(0);
     Animated.timing(progress, {
       toValue: 1,

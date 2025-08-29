@@ -148,17 +148,40 @@ import { useTheme } from '../../../context/ThemeContext';
 import Button from '../../../components/common/Button';
 import Input from '../../../components/common/Input';
 import { fontSizes, spacing } from '../../../styles/styles';
+import userStore from '../../../store/userStore';
+import useAuth from '../../../services/useAuth';
+import { useMutation } from '@tanstack/react-query';
 
 const LoginName = ({ navigation, route }) => {
   const { colors } = useTheme();
-  const [name, setName] = useState('Tabish Khan');
+  const userId = userStore.getState().userId;
+  const phone = userStore.getState().phone;
+  const [name, setName] = useState('');
   const isNameFilled = name.trim().length > 0;
+  const { addName } = useAuth(); 
+  const mutation = useMutation({
+    mutationFn: addName,
+    onSuccess: async (responseData) => {
+      await userStore.getState().updateUser({name:responseData.data.data.name});
+      const updatedName = userStore.getState().name;
+      isNameFilled && navigation.navigate('GetLocation', { name:updatedName,userId:userId })
+    },
+    onError: (err) => {
+      console.error("Login failed:",err);
+      toast.error("Login failed. Please check your credentials.");
+    },
+  });
 
-  // Fade-in + slide-up animation for card content
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    mutation.mutate({phone:phone,name:name});
+  };
+
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const translateYAnim = useRef(new Animated.Value(40)).current;
 
   useEffect(() => {
+
     Animated.parallel([
       Animated.timing(fadeAnim, {
         toValue: 1,
@@ -176,8 +199,7 @@ const LoginName = ({ navigation, route }) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
       <StatusBar barStyle={colors.background === '#101010' ? 'light-content' : 'dark-content'} />
-      {/* Top Image */}
-      <View style={{ height: 260, width: '100%', position: 'relative' }}>
+      <View style={{ height: 260, width: '100%', position: 'relative' }}> 
         <Image
           source={require('../../../assets/backgroundImg.png')}
           style={{ width: '100%', height: '100%' }}
@@ -263,7 +285,7 @@ const LoginName = ({ navigation, route }) => {
           </View>
           <Button
             text="Continue"
-            onPress={() => isNameFilled && navigation.navigate('GetLocation', { name })}
+            onPress={handleSubmit}
             disabled={!isNameFilled}
             style={{ marginBottom: spacing.medium, height: 56, borderRadius: 28 }}
           />

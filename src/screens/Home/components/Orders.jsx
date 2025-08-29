@@ -40,7 +40,7 @@ const Orders = ({navigation}) => {
       <View style={styles.thaliCard}>
         <View style={styles.thaliContent}>
           <Image 
-            source={require('E:/tartegauri30/MMTApp/src/assets/thali.png')}
+            source={require('D:/Programming/Navsudh/MMT/MMT/src/assets/thali.png')}
             style={styles.thaliImage} 
           />
           <View style={styles.thaliInfo}>
@@ -66,7 +66,7 @@ const Orders = ({navigation}) => {
       <View style={styles.thaliCard}>
         <View style={styles.thaliContent}>
           <Image 
-            source={require('E:/tartegauri30/MMTApp/src/assets/thali.png')}
+            source={require('D:/Programming/Navsudh/MMT/MMT/src/assets/thali.png')}
             style={styles.thaliImage} 
           />
           <View style={styles.thaliInfo}>
@@ -111,7 +111,7 @@ const Orders = ({navigation}) => {
           >
             <View style={styles.thaliContent}>
               <Image 
-                source={require('E:/tartegauri30/MMTApp/src/assets/thali.png')}
+                source={require('D:/Programming/Navsudh/MMT/MMT/src/assets/thali.png')}
                 style={styles.thaliImage} 
               />
               <View style={styles.thaliInfo}>

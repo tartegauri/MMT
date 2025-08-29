@@ -14,7 +14,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { fontSizes, fonts } from '../../../styles/styles';
 
-const PROFILE_IMAGE = require('E:/tartegauri30/MMTApp/src/assets/onboardingImg.jpg');
+const PROFILE_IMAGE = require('D:/Programming/Navsudh/MMT/MMT/src/assets/onboardingImg.jpg');
 
 const PersonalDetails = ({ navigation }) => {
   const [fullName, setFullName] = useState('Khan Tabish');
