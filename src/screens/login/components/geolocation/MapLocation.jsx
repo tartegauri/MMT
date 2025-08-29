@@ -84,7 +84,7 @@ const MapLocation = ({ navigation, route }) => {
   const reverseGeocode = async (latitude, longitude) => {
     setIsLoadingAddress(true);
     try {
-      const API_KEY = 'AIzaSyBITKkVUJeuGElkxY9Ma9SVMx1yXLrJLUY'; 
+      const API_KEY = 'MY_GOOGLE_API'; 
       const response = await fetch(
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${API_KEY}`
       );

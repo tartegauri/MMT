@@ -225,7 +225,7 @@ const ManualLocation = ({ navigation, route }) => {
 
   const geocodeAddress = async (address) => {
     try {
-      const API_KEY = 'AIzaSyBITKkVUJeuGElkxY9Ma9SVMx1yXLrJLUY'; 
+      const API_KEY = 'MY_GOOGLE_API'; 
       const encodedAddress = encodeURIComponent(address);
       const response = await fetch(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${encodedAddress}&key=${API_KEY}`
