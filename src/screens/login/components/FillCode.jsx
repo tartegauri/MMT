@@ -155,22 +155,21 @@ const FillCode = ({ navigation, route }) => {
                 key={idx}
                 ref={ref => (inputRefs.current[idx] = ref)}
                 style={{
-                  width: 70,
+                  width: 50,
                   height: 57,
-                  borderRadius: 27,
+                  borderRadius: 12,
                   backgroundColor: '#EDEDED',
-                  fontSize: 28,
+                  fontSize: 24,
                   color: '#222',
                   fontWeight: '600',
-                  fontFamily: fonts.semiBold,
                   marginHorizontal: 4,
                   textAlign: 'center',
+                  padding:2,
                 }}
                 value={digit}
                 onChangeText={text => handleCodeChange(text, idx)}
                 keyboardType="number-pad"
                 maxLength={1}
-                textAlign="center"
                 selectionColor="#FF6F3C"
               />
             ))}
