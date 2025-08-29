@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, StatusBar, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { fontSizes, fonts } from '../../../styles/styles';
 
-const Orders = ({ navigation }) => {
+const Orders = ({navigation}) => {
   const primaryColor = '#FF6F3C';
   const deliveredColor = '#4CAF50';
   const noOrderColor = '#FFC107';
@@ -35,12 +36,8 @@ const Orders = ({ navigation }) => {
   const renderOrderHistory = () => (
     <>
       <Text style={styles.dateHeader}>TODAY</Text>
-      
-      {/* Lunch Order Card - Now navigates on press */}
-      <TouchableOpacity 
-        style={styles.thaliCard}
-        onPress={() => navigation.navigate('ActivePlans')} // Navigate to ActivePlans
-      >
+      {/* Lunch Order Card */}
+      <View style={styles.thaliCard}>
         <View style={styles.thaliContent}>
           <Image 
             source={require('E:/tartegauri30/MMTApp/src/assets/thali.png')}
@@ -48,27 +45,25 @@ const Orders = ({ navigation }) => {
           />
           <View style={styles.thaliInfo}>
             <View style={styles.thaliTitleContainer}>
-              <Text style={[styles.thaliTitle, { color: '#000' }]}>Special Veg Thali</Text>
+              <Text style={[styles.thaliTitle, { color: '#000', fontFamily: fonts.bold }]} >Special Veg Thali</Text>
               <View style={[styles.lunchButton, { backgroundColor: primaryColor }]}>
-                <Text style={styles.lunchButtonText}>LUNCH</Text>
+                <Text style={[styles.lunchButtonText, { fontFamily: fonts.semiBold }]}>LUNCH</Text>
               </View>
             </View>
-            <Text style={[styles.thaliSubtitle, { color: '#666' }]}>Dhewar Mess</Text>
-            <Text style={[styles.thaliDescription, { color: '#8B5CF6' }]}>
+            <Text style={[styles.thaliSubtitle, { color: '#666', fontFamily: fonts.regular }]}>Dhewar Mess</Text>
+            <Text style={[styles.thaliDescription, { color: '#8B5CF6', fontFamily: fonts.regular }]}>
               Menu : Mix veg, Paneer, G...
             </Text>
           </View>
         </View>
         <View style={[styles.band, { backgroundColor: deliveredColor }]}>
-          <Text style={styles.bandText}>ORDER DELIVERED</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('ActivePlans')}>
+            <Text style={[styles.bandText, { fontFamily: fonts.semiBold }]}>ORDER DELIVERED</Text>
+          </TouchableOpacity>
         </View>
-      </TouchableOpacity>
-      
-      {/* Dinner Order Card - Now navigates on press */}
-      <TouchableOpacity 
-        style={styles.thaliCard}
-        onPress={() => navigation.navigate('ActivePlans')} // Navigate to ActivePlans
-      >
+      </View>
+      {/* Dinner Order Card */}
+      <View style={styles.thaliCard}>
         <View style={styles.thaliContent}>
           <Image 
             source={require('E:/tartegauri30/MMTApp/src/assets/thali.png')}
@@ -76,21 +71,21 @@ const Orders = ({ navigation }) => {
           />
           <View style={styles.thaliInfo}>
             <View style={styles.thaliTitleContainer}>
-              <Text style={[styles.thaliTitle, { color: '#000' }]}>Special Veg Thali</Text>
+              <Text style={[styles.thaliTitle, { color: '#000', fontFamily: fonts.bold }]}>Special Veg Thali</Text>
               <View style={[styles.lunchButton, { backgroundColor: '#C05330' }]}>
-                <Text style={styles.lunchButtonText}>DINNER</Text>
+                <Text style={[styles.lunchButtonText, { fontFamily: fonts.semiBold }]}>DINNER</Text>
               </View>
             </View>
-            <Text style={[styles.thaliSubtitle, { color: '#666' }]}>Dhewar Mess</Text>
-            <Text style={[styles.thaliDescription, { color: '#8B5CF6' }]}>
+            <Text style={[styles.thaliSubtitle, { color: '#666', fontFamily: fonts.regular }]}>Dhewar Mess</Text>
+            <Text style={[styles.thaliDescription, { color: '#8B5CF6', fontFamily: fonts.regular }]}>
               Menu : Mix veg, Paneer, G...
             </Text>
           </View>
         </View>
         <View style={[styles.band, { backgroundColor: deliveredColor }]}>
-          <Text style={styles.bandText}>ORDER DELIVERED</Text>
+          <Text style={[styles.bandText, { fontFamily: fonts.semiBold }]}>ORDER DELIVERED</Text>
         </View>
-      </TouchableOpacity>
+      </View>
     </>
   );
 
@@ -98,26 +93,21 @@ const Orders = ({ navigation }) => {
     if (!hasFutureOrders) {
       return (
         <View style={styles.emptyContainer}>
-          <Text style={styles.emptyText}>No Future Orders Scheduled</Text>
-          <TouchableOpacity 
-            style={styles.exploreButton}
-            onPress={() => navigation.navigate('MessesScreen')}
-          >
-            <Text style={styles.exploreButtonText}>Explore Messes</Text>
+          <Text style={[styles.emptyText, { fontFamily: fonts.regular }]}>No Future Orders Scheduled</Text>
+          <TouchableOpacity style={styles.exploreButton}>
+            <Text style={[styles.exploreButtonText, { fontFamily: fonts.semiBold }]}>Explore Messes</Text>
           </TouchableOpacity>
         </View>
       );
     }
-    
+
     return (
       <View style={styles.content}>
-        <Text style={styles.dateHeader}>SCHEDULED</Text>
-        
+        <Text style={[styles.dateHeader, { fontFamily: fonts.semiBold }]}>SCHEDULED</Text>
         {futureOrdersData.map((order) => (
-          <TouchableOpacity
+          <View
             key={order.id}
             style={styles.thaliCard}
-            onPress={() => navigation.navigate('ActivePlans')} // Navigate to ActivePlans
           >
             <View style={styles.thaliContent}>
               <Image 
@@ -126,21 +116,21 @@ const Orders = ({ navigation }) => {
               />
               <View style={styles.thaliInfo}>
                 <View style={styles.thaliTitleContainer}>
-                  <Text style={[styles.thaliTitle, { color: '#000' }]}>{order.title}</Text>
+                  <Text style={[styles.thaliTitle, { color: '#000', fontFamily: fonts.bold }]}>{order.title}</Text>
                   <View style={[styles.lunchButton, { backgroundColor: primaryColor }]}>
-                    <Text style={styles.lunchButtonText}>{order.mealTime}</Text>
+                    <Text style={[styles.lunchButtonText, { fontFamily: fonts.semiBold }]}>{order.mealTime}</Text>
                   </View>
                 </View>
-                <Text style={[styles.thaliSubtitle, { color: '#666' }]}>{order.mess}</Text>
-                <Text style={[styles.thaliDescription, { color: '#8B5CF6' }]}>
+                <Text style={[styles.thaliSubtitle, { color: '#666', fontFamily: fonts.regular }]}>{order.mess}</Text>
+                <Text style={[styles.thaliDescription, { color: '#8B5CF6', fontFamily: fonts.regular }]}>
                   {order.menu}
                 </Text>
               </View>
             </View>
             <View style={[styles.band, { backgroundColor: order.statusBandColor }]}>
-              <Text style={styles.bandText}>SCHEDULED FOR {order.scheduledFor.toUpperCase()}</Text>
+              <Text style={[styles.bandText, { fontFamily: fonts.semiBold }]}>SCHEDULED FOR {order.scheduledFor.toUpperCase()}</Text>
             </View>
-          </TouchableOpacity>
+          </View>
         ))}
       </View>
     );
@@ -149,29 +139,26 @@ const Orders = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle="light-content" backgroundColor={primaryColor} />
-      
       <View style={[styles.header, { backgroundColor: primaryColor }]}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-          <Icon name="arrow-back" size={24} color="#fff" />
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backIcon}>
+          <Icon name="arrow-back-outline" size={22} color="#fff" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Orders</Text>
+        <Text style={[styles.headerTitle, { fontFamily: fonts.bold }]}>Orders</Text>
       </View>
-
       <View style={styles.toggleContainer}>
         <TouchableOpacity 
           style={[styles.toggleButton, activeTab === 'history' && styles.activeButton, { backgroundColor: activeTab === 'history' ? primaryColor : 'transparent' }]}
           onPress={() => setActiveTab('history')}
         >
-          <Text style={[styles.toggleButtonText, activeTab === 'history' && styles.activeButtonText]}>ORDER HISTORY</Text>
+          <Text style={[styles.toggleButtonText, activeTab === 'history' && styles.activeButtonText, { fontFamily: fonts.semiBold }]}>ORDER HISTORY</Text>
         </TouchableOpacity>
         <TouchableOpacity 
           style={[styles.toggleButton, activeTab === 'future' && styles.activeButton, { backgroundColor: activeTab === 'future' ? primaryColor : 'transparent' }]}
           onPress={() => setActiveTab('future')}
         >
-          <Text style={[styles.toggleButtonText, activeTab === 'future' && styles.activeButtonText]}>FUTURE ORDERS</Text>
+          <Text style={[styles.toggleButtonText, activeTab === 'future' && styles.activeButtonText, { fontFamily: fonts.semiBold }]}>FUTURE ORDERS</Text>
         </TouchableOpacity>
       </View>
-
       <ScrollView style={styles.scrollViewContent}>
         {activeTab === 'history' ? renderOrderHistory() : renderFutureOrders()}
       </ScrollView>
@@ -197,13 +184,11 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
     marginBottom: 0,
-  },
-  backButton: {
-    paddingRight: 10,
+    // justifyContent: 'center',
   },
   headerTitle: {
     color: '#fff',
-    fontSize: 20,
+    fontSize: fontSizes.title,
     fontWeight: 'bold',
   },
   toggleContainer: {
@@ -224,7 +209,7 @@ const styles = StyleSheet.create({
   toggleButtonText: {
     color: '#fff',
     fontWeight: 'bold',
-    fontSize: 12,
+    fontSize: fontSizes.label,
   },
   activeButton: {
     backgroundColor: '#FF6F3C',
@@ -233,7 +218,7 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   dateHeader: {
-    fontSize: 14,
+    fontSize: fontSizes.label,
     color: '#888',
     marginTop: 10,
     marginBottom: 10,
@@ -280,7 +265,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   thaliTitle: {
-    fontSize: 18,
+    fontSize: fontSizes.subtitle,
     fontWeight: 'bold',
     flex: 1,
   },
@@ -291,15 +276,15 @@ const styles = StyleSheet.create({
   },
   lunchButtonText: {
     color: '#fff',
-    fontSize: 10,
+    fontSize: fontSizes.label - 4,
     fontWeight: 'bold',
   },
   thaliSubtitle: {
-    fontSize: 14,
+    fontSize: fontSizes.label,
     marginBottom: 4,
   },
   thaliDescription: {
-    fontSize: 12,
+    fontSize: fontSizes.input - 2,
   },
   band: {
     flexDirection: 'row',
@@ -313,7 +298,7 @@ const styles = StyleSheet.create({
   bandText: {
     color: '#fff',
     fontWeight: 'bold',
-    fontSize: 12,
+    fontSize: fontSizes.label - 2,
     letterSpacing: 0.5,
   },
   emptyContainer: {
@@ -323,7 +308,7 @@ const styles = StyleSheet.create({
     paddingTop: 50,
   },
   emptyText: {
-    fontSize: 16,
+    fontSize: fontSizes.input,
     color: '#888',
     marginBottom: 20,
   },
@@ -336,6 +321,7 @@ const styles = StyleSheet.create({
   exploreButtonText: {
     color: '#fff',
     fontWeight: 'bold',
+    fontSize: fontSizes.label,
   },
 });
 

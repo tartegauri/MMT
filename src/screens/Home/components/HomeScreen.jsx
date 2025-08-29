@@ -11,9 +11,10 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useTheme } from '../../../context/ThemeContext';
-import { fontSizes, spacing } from '../../../styles/styles';
+import { fontSizes, fonts, spacing } from '../../../styles/styles';
 
 import Icon from 'react-native-vector-icons/Ionicons';
+
 const HomeScreen = ({ navigation }) => {
   const { colors, theme } = useTheme();
 
@@ -118,7 +119,6 @@ const HomeScreen = ({ navigation }) => {
             </View>
           </View>
 
-          {/* Special Veg Thali Card */}
           {/* Special Veg Thali Card */}
           <View style={styles.thaliSection}>
             <TouchableOpacity
@@ -433,12 +433,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   greeting: {
-    fontSize: fontSizes.subtitle + 5,
+    fontSize: fontSizes.title,
     fontWeight: 'bold',
+    fontFamily: fonts.bold,
   },
   location: {
-    fontSize: 12,
+    fontSize: fontSizes.label,
     marginTop: 2,
+    fontFamily: fonts.regular,
   },
   profileButton: {
     width: 40,
@@ -454,8 +456,9 @@ const styles = StyleSheet.create({
   },
   profileText: {
     color: 'white',
-    fontSize: 18,
+    fontSize: fontSizes.subtitle,
     fontWeight: 'bold',
+    fontFamily: fonts.bold,
   },
   bannerContainer: {
     alignItems: 'center',
@@ -484,8 +487,9 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   letsGoText: {
-    fontSize: 14,
+    fontSize: fontSizes.subtitle,
     fontWeight: 'bold',
+    fontFamily: fonts.semiBold,
   },
   offerCard: {
     backgroundColor: '#fff',
@@ -497,7 +501,6 @@ const styles = StyleSheet.create({
       width: 0,
       height: 2,
     },
-
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 3,
@@ -510,11 +513,12 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   offerTitle: {
-    fontSize: 20,
+    fontSize: fontSizes.subtitle,
     fontWeight: '700',
     textAlign: 'left',
     marginBottom: 2,
     color: '#8B4513',
+    fontFamily: fonts.semiBold,
   },
   orderButton: {
     paddingHorizontal: 20,
@@ -533,9 +537,9 @@ const styles = StyleSheet.create({
   },
   orderButtonText: {
     color: '#FFFFFF',
-    fontSize: 11,
-
+    fontSize: fontSizes.button,
     letterSpacing: 0.5,
+    fontFamily: fonts.semiBold,
   },
   mealsLiveContainer: {
     marginBottom: 10,
@@ -550,7 +554,6 @@ const styles = StyleSheet.create({
       width: 0,
       height: 1,
     },
-
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 3,
@@ -577,14 +580,16 @@ const styles = StyleSheet.create({
   },
   mealsLiveText: {
     color: 'white',
-    fontSize: 12,
+    fontSize: fontSizes.label,
     fontWeight: 'bold',
     letterSpacing: 0.5,
+    fontFamily: fonts.semiBold,
   },
   sectionTitle: {
     color: 'white',
-    fontSize: 12,
+    fontSize: fontSizes.label,
     fontWeight: 'bold',
+    fontFamily: fonts.semiBold,
   },
   thaliCard: {
     padding: 0,
@@ -600,8 +605,9 @@ const styles = StyleSheet.create({
     height: 120,
   },
   thaliSubtitle: {
-    fontSize: 14,
+    fontSize: fontSizes.subtitle - 3,
     marginBottom: 4,
+    fontFamily: fonts.regular,
   },
   orangeBand: {
     backgroundColor: '#FF6F3C',
@@ -613,14 +619,16 @@ const styles = StyleSheet.create({
   },
   orderTrialText: {
     color: 'white',
-    fontSize: 12,
+    fontSize: fontSizes.label,
     fontWeight: 'bold',
     letterSpacing: 0.5,
+    fontFamily: fonts.semiBold,
   },
   priceText: {
     color: 'white',
-    fontSize: 13,
+    fontSize: fontSizes.label,
     fontWeight: '500',
+    fontFamily: fonts.regular,
   },
   orderTrialButton: {
     paddingHorizontal: 16,
@@ -630,9 +638,10 @@ const styles = StyleSheet.create({
   },
   orderTrialButtonText: {
     color: 'white',
-    fontSize: 11,
+    fontSize: fontSizes.button - 4,
     fontWeight: 'bold',
     letterSpacing: 0.5,
+    fontFamily: fonts.semiBold,
   },
   thaliImage: {
     width: 90,
@@ -656,9 +665,10 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   thaliTitle: {
-    fontSize: 18,
+    fontSize: fontSizes.title - 4,
     fontWeight: 'bold',
     flex: 1,
+    fontFamily: fonts.bold,
   },
   lunchButton: {
     paddingHorizontal: 12,
@@ -667,12 +677,14 @@ const styles = StyleSheet.create({
   },
   lunchButtonText: {
     color: 'white',
-    fontSize: 10,
+    fontSize: fontSizes.label - 3,
     fontWeight: 'bold',
+    fontFamily: fonts.semiBold,
   },
   thaliDescription: {
-    fontSize: 12,
+    fontSize: fontSizes.input - 2,
     marginBottom: 10,
+    fontFamily: fonts.regular,
   },
   thaliFooter: {
     flexDirection: 'row',
@@ -686,11 +698,13 @@ const styles = StyleSheet.create({
   },
   customizeButtonText: {
     color: 'white',
-    fontSize: 10,
+    fontSize: fontSizes.label,
     fontWeight: 'bold',
+    fontFamily: fonts.semiBold,
   },
   startingFrom: {
-    fontSize: 12,
+    fontSize: fontSizes.label,
+    fontFamily: fonts.regular,
   },
   messSection: {
     marginHorizontal: spacing.medium,
@@ -698,144 +712,12 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     marginBottom: spacing.medium,
   },
-  messOptionsTitle: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    padding: 15,
-    paddingBottom: 10,
-  },
-  messCard: {
-    position: 'relative',
-    marginHorizontal: 15,
-    marginBottom: 15,
-  },
-  messImage: {
-    width: '100%',
-    height: 120,
-    borderRadius: 10,
-  },
-  messArrow: {
-    position: 'absolute',
-    right: 15,
-    top: '50%',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  arrowText: {
-    color: 'white',
-    fontSize: spacing.medium,
-  },
-  messFromText: {
-    position: 'absolute',
-    bottom: 10,
-    left: 10,
-    color: 'white',
-    fontSize: 12,
-    fontWeight: 'bold',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    paddingHorizontal: spacing.small,
-    paddingVertical: 4,
-    borderRadius: spacing.small,
-  },
-  messInfo: {
-    padding: 15,
-  },
-  messTitle: {
-    fontSize: 12,
-    marginBottom: 5,
-  },
-  messName: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 2,
-  },
-  messType: {
-    fontSize: 12,
-    marginBottom: 10,
-  },
-  newSubscription: {
-    fontSize: 12,
-    fontWeight: '600',
-    marginBottom: 10,
-  },
-  subscriptionOptions: {
-    flexDirection: 'row',
-    gap: 10,
-  },
-  subscriptionButton: {
-    paddingHorizontal: 15,
-    paddingVertical: spacing.small,
-    borderRadius: 15,
-    borderWidth: 1,
-  },
-  activeSubscription: {
-    // Dynamic colors will be applied via inline styles
-  },
-  subscriptionText: {
-    fontSize: 12,
-  },
-  activeSubscriptionText: {
-    color: 'white',
-  },
-  bottomSection: {
-    marginHorizontal: spacing.medium,
-    borderRadius: 15,
-    padding: spacing.medium,
-    marginBottom: spacing.medium,
-  },
-  bottomTitle: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: spacing.medium,
-  },
-  iconGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
-  iconItem: {
-    alignItems: 'center',
-    flex: 1,
-  },
-  iconCircle: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: spacing.small,
-  },
-  iconText: {
-    fontSize: 20,
-  },
-  iconLabel: {
-    fontSize: 11,
-    textAlign: 'center',
-    fontWeight: '500',
-  },
-  getStartedSection: {
-    paddingVertical: spacing.medium,
-    alignItems: 'center',
-  },
-  getStartedTitle: {
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-  // Mess Options Styles
-  messSection: {
-    marginHorizontal: spacing.medium,
-    marginBottom: spacing.medium,
-  },
   messSectionTitle: {
-    fontSize: 14,
+    fontSize: fontSizes.subtitle,
     fontWeight: 'bold',
     marginBottom: 15,
     letterSpacing: 0.5,
+    fontFamily: fonts.semiBold,
   },
   messCard: {
     position: 'relative',
@@ -882,8 +764,9 @@ const styles = StyleSheet.create({
   },
   priceTagText: {
     color: 'white',
-    fontSize: 12,
+    fontSize: fontSizes.label,
     fontWeight: 'bold',
+    fontFamily: fonts.semiBold,
   },
   arrowButton: {
     position: 'absolute',
@@ -912,15 +795,17 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 15,
   },
   messDetailsText: {
-    fontSize: 12,
+    fontSize: fontSizes.label,
     color: '#666',
     marginBottom: 2,
+    fontFamily: fonts.regular,
   },
   messTitle: {
-    fontSize: 20,
+    fontSize: fontSizes.title - 4,
     fontWeight: 'bold',
     color: '#000',
     marginBottom: 2,
+    fontFamily: fonts.bold,
   },
   messMetaRow: {
     flexDirection: 'row',
@@ -929,13 +814,15 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   messSubtitle: {
-    fontSize: 14,
+    fontSize: fontSizes.subtitle - 2,
     color: '#666',
+    fontFamily: fonts.regular,
   },
   viewSubscriptionsLink: {
-    fontSize: 12,
+    fontSize: fontSizes.label - 2,
     color: '#FF6F3C',
     fontWeight: '500',
+    fontFamily: fonts.semiBold,
   },
   subscriptionButtonsRow: {
     flexDirection: 'row',
@@ -948,9 +835,53 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   subButtonText: {
-    fontSize: 12,
+    fontSize: fontSizes.label,
     color: '#000',
     fontWeight: '500',
+    fontFamily: fonts.semiBold,
+  },
+  bottomSection: {
+    marginHorizontal: spacing.medium,
+    borderRadius: 15,
+    padding: spacing.medium,
+    marginBottom: spacing.medium,
+  },
+  bottomTitle: {
+    fontSize: fontSizes.subtitle,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: spacing.medium,
+    fontFamily: fonts.semiBold,
+  },
+  iconItem: {
+    alignItems: 'center',
+    flex: 1,
+  },
+  iconCircle: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: spacing.small,
+  },
+  iconText: {
+    fontSize: 20,
+  },
+  iconLabel: {
+    fontSize: fontSizes.label - 1,
+    textAlign: 'center',
+    fontWeight: '500',
+    fontFamily: fonts.semiBold,
+  },
+  getStartedSection: {
+    paddingVertical: spacing.medium,
+    alignItems: 'center',
+  },
+  getStartedTitle: {
+    fontSize: fontSizes.subtitle,
+    fontWeight: 'bold',
+    fontFamily: fonts.semiBold,
   },
 });
 

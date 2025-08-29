@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useTheme } from '../../../context/ThemeContext';
-import { fontSizes, spacing } from '../../../styles/styles';
+import { fontSizes, fonts, spacing } from '../../../styles/styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const ShareScreen = ({ navigation }) => {
@@ -51,12 +51,12 @@ const ShareScreen = ({ navigation }) => {
             {/* Stars decoration */}
             <Text style={styles.starLeft}>✦</Text>
             <Text style={styles.starRight}>✦</Text>
-            
+
             {/* Main Title */}
             <View style={styles.titleContainer}>
-              <Text style={styles.referTitle}>REFER</Text>
-              <Text style={styles.andText}>AND</Text>
-              <Text style={styles.winTitle}>WIN</Text>
+              <Text style={[styles.referTitle, { fontFamily: fonts.bold, fontSize: fontSizes.title * 2 }]}>REFER</Text>
+              <Text style={[styles.andText, { fontFamily: fonts.semiBold, fontSize: fontSizes.subtitle }]}>AND</Text>
+              <Text style={[styles.winTitle, { fontFamily: fonts.bold, fontSize: fontSizes.title * 2 }]}>WIN</Text>
             </View>
           </LinearGradient>
         </View>
@@ -68,14 +68,14 @@ const ShareScreen = ({ navigation }) => {
             <View style={styles.thaliHeaderContainer}>
               <View style={styles.decorativeLine} />
               <View style={styles.referralBadge}>
-                <Text style={styles.badgeText}>REFERRAL PROGRAM</Text>
+                <Text style={[styles.badgeText, { fontFamily: fonts.semiBold }]}>REFERRAL PROGRAM</Text>
               </View>
               <View style={styles.decorativeLine} />
             </View>
           </View>
 
           {/* Description Text */}
-          <Text style={[styles.descriptionText, { color: colors.textPrimary }]}>
+          <Text style={[styles.descriptionText, { color: colors.textPrimary, fontFamily: fonts.regular }]}>
             Share the love of home-style tiffins. For every friend who joins, you both get a reward!
           </Text>
 
@@ -83,13 +83,13 @@ const ShareScreen = ({ navigation }) => {
           <View style={styles.rewardsContainer}>
             <View style={styles.rewardItem}>
               <View style={styles.greenDot} />
-              <Text style={[styles.rewardText, { color: colors.textPrimary }]}>
+              <Text style={[styles.rewardText, { color: colors.textPrimary, fontFamily: fonts.semiBold }]}>
                 You Get: 25 MMT coins
               </Text>
             </View>
             <View style={styles.rewardItem}>
               <View style={styles.greenDot} />
-              <Text style={[styles.rewardText, { color: colors.textPrimary }]}>
+              <Text style={[styles.rewardText, { color: colors.textPrimary, fontFamily: fonts.semiBold }]}>
                 They Get: 25 MMT coins
               </Text>
             </View>
@@ -98,13 +98,13 @@ const ShareScreen = ({ navigation }) => {
           {/* Referral Code Section */}
           <View style={styles.referralCodeContainer}>
             <View style={styles.codeBox}>
-              <Text style={styles.referralCode}>TABISH 50</Text>
+              <Text style={[styles.referralCode, { fontFamily: fonts.bold }]}>TABISH 50</Text>
             </View>
           </View>
 
           {/* Invite Button */}
           <TouchableOpacity style={styles.inviteButton} activeOpacity={0.8}>
-            <Text style={styles.inviteButtonText}>Invite Now</Text>
+            <Text style={[styles.inviteButtonText, { fontFamily: fonts.semiBold }]}>Invite Now</Text>
           </TouchableOpacity>
 
           {/* Extra spacing for bottom navigation */}
@@ -117,16 +117,16 @@ const ShareScreen = ({ navigation }) => {
         <TouchableOpacity style={styles.navItem}>
           <Icon name="home-outline" size={24} color="#666" />
         </TouchableOpacity>
-        
+
         <TouchableOpacity style={styles.navItemActive}>
           <Icon name="share-social" size={20} color="white" />
-          <Text style={styles.navActiveText}>Refer</Text>
+          <Text style={[styles.navActiveText, { fontFamily: fonts.semiBold }]}>Refer</Text>
         </TouchableOpacity>
-        
+
         <TouchableOpacity style={styles.navItem}>
           <Icon name="time-outline" size={24} color="#666" />
         </TouchableOpacity>
-        
+
         <TouchableOpacity style={styles.navItem}>
           <Icon name="person-outline" size={24} color="#666" />
         </TouchableOpacity>
@@ -187,7 +187,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   referTitle: {
-    fontSize: 48,
     fontWeight: '900',
     color: 'white',
     textShadowColor: 'rgba(0, 0, 0, 0.3)',
@@ -196,13 +195,11 @@ const styles = StyleSheet.create({
     letterSpacing: 2,
   },
   andText: {
-    fontSize: 18,
     fontWeight: '600',
     color: 'white',
     marginVertical: -5,
   },
   winTitle: {
-    fontSize: 48,
     fontWeight: '900',
     color: 'white',
     textShadowColor: 'rgba(0, 0, 0, 0.3)',
@@ -242,12 +239,12 @@ const styles = StyleSheet.create({
   },
   badgeText: {
     color: 'white',
-    fontSize: 12,
+    fontSize: fontSizes.label,
     fontWeight: 'bold',
     letterSpacing: 0.5,
   },
   descriptionText: {
-    fontSize: 16,
+    fontSize: fontSizes.input,
     textAlign: 'center',
     lineHeight: 24,
     marginBottom: spacing.large,
@@ -270,7 +267,7 @@ const styles = StyleSheet.create({
     marginRight: spacing.small,
   },
   rewardText: {
-    fontSize: 16,
+    fontSize: fontSizes.input,
     fontWeight: '500',
   },
   referralCodeContainer: {
@@ -287,7 +284,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FAFAFA',
   },
   referralCode: {
-    fontSize: 24,
+    fontSize: fontSizes.title,
     fontWeight: 'bold',
     color: '#FF6F3C',
     letterSpacing: 2,
@@ -312,7 +309,7 @@ const styles = StyleSheet.create({
   },
   inviteButtonText: {
     color: 'white',
-    fontSize: 14,
+    fontSize: fontSizes.label,
     fontWeight: '600',
   },
   bottomSpacing: {
@@ -343,7 +340,7 @@ const styles = StyleSheet.create({
   },
   navActiveText: {
     color: 'white',
-    fontSize: 14,
+    fontSize: fontSizes.label,
     fontWeight: '600',
     marginLeft: 6,
   },

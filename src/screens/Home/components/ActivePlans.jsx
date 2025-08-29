@@ -1,326 +1,311 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, StatusBar, SafeAreaView } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
-import moment from 'moment';
-import CalendarStrip from 'react-native-calendar-strip';
+import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { fontSizes, fonts } from '../../../styles/styles';
 
-// Custom ProgressBar component
-const ProgressBar = ({ progress, total, color }) => {
-  const progressPercentage = (progress / total) * 100;
-  return (
-    <View style={styles.progressBarContainer}>
-      <View style={[styles.progressBar, { width: `${progressPercentage}%`, backgroundColor: color }]} />
-    </View>
-  );
+const days = [
+  ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+  [1, 2, 3, 4, 5, 6, 7],
+  [8, 9, 10, 11, 12, 13, 14],
+  [15, 16, 17, 18, 19, 20, 21],
+  [22, 23, 24, 25, 26, 27, 28],
+  [29, 30, 31, '', '', '', '']
+];
+
+const deliveredDays = [
+  1, 2, 3, 4, 5, 6, 7,
+  8, 9, 10, 12, 13, 14,
+  15, 16, 17, 18, 19, 20, 21
+];
+const scheduledDays = [23, 24, 25, 26, 27, 28, 29, 30, 31];
+const skippedDays = [11];
+
+const getStatus = (day) => {
+  if (deliveredDays.includes(day)) return 'delivered';
+  if (scheduledDays.includes(day)) return 'scheduled';
+  if (skippedDays.includes(day)) return 'skipped';
+  return null;
 };
 
-const ActivePlans = ({ navigation }) => {
-  const primaryColor = '#FF6F3C';
-  const deliveredColor = '#4CAF50';
-  const scheduledColor = '#FFC107';
-  const skippedColor = '#EC4899'; 
-
-  // Dummy data for progress bar
-  const tiffinsDelivered = 22;
-  const totalTiffins = 60;
-
-  // Dummy data for the calendar
-  const deliveredDates = ['2025-08-01', '2025-08-02', '2025-08-03', '2025-08-05', '2025-08-06', '2025-08-07', '2025-08-08', '2025-08-12', '2025-08-13', '2025-08-14', '2025-08-15', '2025-08-22'];
-  const skippedDates = ['2025-08-04', '2025-08-17'];
-  const scheduledDates = ['2025-08-09', '2025-08-10', '2025-08-11', '2025-08-16', '2025-08-18', '2025-08-19', '2025-08-20', '2025-08-21', '2025-08-23', '2025-08-24', '2025-08-25', '2025-08-26', '2025-08-27', '2025-08-28', '2025-08-29', '2025-08-30', '2025-08-31'];
-
-  const customDatesStyles = [
-    ...deliveredDates.map(date => ({
-      dateNameStyle: { color: 'white', fontWeight: 'bold' },
-      dateNumberStyle: { color: 'white' },
-      dateContainerStyle: { backgroundColor: deliveredColor, borderRadius: 20 },
-      highlightDateContainerStyle: { backgroundColor: deliveredColor, borderRadius: 20 },
-    })),
-    ...scheduledDates.map(date => ({
-      dateNameStyle: { color: 'black' },
-      dateNumberStyle: { color: 'black' },
-      dateContainerStyle: { backgroundColor: scheduledColor, borderRadius: 20 },
-      highlightDateContainerStyle: { backgroundColor: scheduledColor, borderRadius: 20 },
-    })),
-    ...skippedDates.map(date => ({
-      dateNameStyle: { color: 'white', fontWeight: 'bold' },
-      dateNumberStyle: { color: 'white' },
-      dateContainerStyle: { backgroundColor: skippedColor, borderRadius: 20 },
-      highlightDateContainerStyle: { backgroundColor: skippedColor, borderRadius: 20 },
-    })),
-  ];
-
+const ActivePlans = () => {
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="light-content" backgroundColor={primaryColor} />
-
-      {/* Header Section */}
-      <View style={[styles.header, { backgroundColor: primaryColor }]}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-          <Icon name="arrow-back" size={24} color="#fff" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Active Plans</Text>
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+      {/* Header */}
+      <View style={styles.headerBackground}>
+        <View style={styles.headerRow}>
+          <TouchableOpacity>
+            <Ionicons name="arrow-back" size={24} color="#fff" />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Active Plans</Text>
+        </View>
       </View>
 
-      <ScrollView style={styles.scrollViewContent}>
-        {/* Current Plan Card */}
-        <View style={styles.planCard}>
-          <Text style={styles.planCardHeader}>CURRENT PLAN</Text>
-          <Text style={styles.planCardTitle}>Monthly - Special Veg Thali</Text>
-        </View>
-
-        {/* Tiffins Delivered Section with Progress Bar */}
-        <View style={styles.sectionContainer}>
-          <Text style={styles.sectionHeader}>TIFFINS DELIVERED</Text>
-          <Text style={styles.tiffinCount}>{tiffinsDelivered}/{totalTiffins}</Text>
-        </View>
-        <ProgressBar 
-          progress={tiffinsDelivered} 
-          total={totalTiffins} 
-          color={deliveredColor} 
-        />
-
-        {/* Hurry Up! Banner */}
-        <View style={[styles.alertBanner, { backgroundColor: scheduledColor }]}>
-          <Icon name="warning" size={20} color="#000" style={styles.alertIcon} />
-          <Text style={styles.alertText}>
-            <Text style={{ fontWeight: 'bold' }}>Hurry Up!</Text> Your Premium plan expires in 8 days.
-          </Text>
-        </View>
-
-        {/* Tracker Calendar */}
-        <View style={styles.trackerContainer}>
-          <Text style={styles.sectionHeader}>TRACKER</Text>
-          <View style={styles.calendar}>
-            <CalendarStrip
-              scrollable
-              style={{ height: 100, paddingTop: 10, paddingBottom: 10 }}
-              calendarColor={'white'}
-              calendarHeaderStyle={{ color: '#888', fontWeight: 'bold' }}
-              dateNumberStyle={{ color: '#000' }}
-              dateNameStyle={{ color: '#888' }}
-              highlightDateNumberStyle={{ color: 'white' }}
-              highlightDateNameStyle={{ color: 'white' }}
-              iconContainer={{ flex: 0.1 }}
-              dateContainerStyle={{ borderRadius: 20 }}
-              dayContainerStyle={{ marginHorizontal: 5 }}
-              markedDates={customDatesStyles}
-            />
-          </View>
-        </View>
-
-        {/* Legend */}
-        <View style={styles.legendContainer}>
-          <View style={styles.legendItem}>
-            <View style={[styles.legendColor, { backgroundColor: deliveredColor }]} />
-            <Text style={styles.legendText}>Delivered</Text>
-          </View>
-          <View style={styles.legendItem}>
-            <View style={[styles.legendColor, { backgroundColor: scheduledColor }]} />
-            <Text style={styles.legendText}>Scheduled</Text>
-          </View>
-          <View style={styles.legendItem}>
-            <View style={[styles.legendColor, { backgroundColor: skippedColor }]} />
-            <Text style={styles.legendText}>Skipped</Text>
-          </View>
-        </View>
-
-        {/* Renew Button */}
-        <TouchableOpacity style={[styles.renewButton, { backgroundColor: primaryColor }]}>
-          <Text style={styles.renewButtonText}>Renew Your Plan</Text>
-        </TouchableOpacity>
-      </ScrollView>
-
-      {/* Bottom Navigation Bar */}
-      <View style={styles.bottomNav}>
-        <TouchableOpacity style={styles.navItem}>
-          <Icon name="home-outline" size={24} color="#888" />
-          <Text style={styles.navText}>Home</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Icon name="share-social-outline" size={24} color="#888" />
-          <Text style={styles.navText}>Share</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.navItem, styles.activeNavItem]}>
-          <Icon name="time-outline" size={24} color="#fff" />
-          <Text style={[styles.navText, styles.activeNavText]}>Orders</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Icon name="person-outline" size={24} color="#888" />
-          <Text style={styles.navText}>Profile</Text>
-        </TouchableOpacity>
+      {/* Plan Details */}
+      <View style={styles.planCard}>
+        <Text style={styles.label}>CURRENT PLAN</Text>
+        <Text style={styles.planName}>Monthly - Special Veg Thali</Text>
       </View>
 
-    </SafeAreaView>
+      {/* Tiffins Delivered */}
+      <View style={styles.deliveredContainer}>
+        <Text style={styles.deliveredLabel}>TIFFINS DELIVERED</Text>
+        <Text style={styles.deliveredCount}>22/60</Text>
+      </View>
+      <View style={styles.progressBarBackground}>
+        <View style={styles.progressBarFill} />
+      </View>
+
+      {/* Notice */}
+      <View style={styles.noticeBox}>
+        <Ionicons name="alert-circle" size={24} color="#FFC107" style={{ marginRight: 12 }} />
+        <View>
+          <Text style={styles.noticeTitle}>Hurry Up!</Text>
+          <Text style={styles.noticeText}>Your Premium plan expires in 8 days.</Text>
+        </View>
+      </View>
+
+      {/* Tracker */}
+      <Text style={styles.trackerLabel}>TRACKER</Text>
+      <View style={styles.calendarContainer}>
+        {days.map((week, wi) => (
+          <View key={wi} style={styles.weekRow}>
+            {week.map((day, di) => {
+              if (wi === 0) {
+                return (
+                  <Text key={di} style={styles.dayHeader}>{day}</Text>
+                );
+              } else if (day === '') {
+                return <View key={di} style={styles.dayEmpty} />;
+              }
+              const status = getStatus(day);
+              let styleCircle = styles.dayCircle;
+              if (status === 'delivered') styleCircle = [styles.dayCircle, styles.deliveredCircle];
+              if (status === 'scheduled') styleCircle = [styles.dayCircle, styles.scheduledCircle];
+              if (status === 'skipped') styleCircle = [styles.dayCircle, styles.skippedCircle];
+              return (
+                <View key={di} style={styleCircle}>
+                  <Text style={styles.dayText}>{day}</Text>
+                </View>
+              );
+            })}
+          </View>
+        ))}
+      </View>
+
+      {/* Legend */}
+      <View style={styles.legendRow}>
+        <View style={styles.legendItem}>
+          <View style={[styles.legendDot, { backgroundColor: '#38C173' }]} />
+          <Text style={styles.legendLabel}>Delivered</Text>
+        </View>
+        <View style={styles.legendItem}>
+          <View style={[styles.legendDot, { backgroundColor: '#FFD600' }]} />
+          <Text style={styles.legendLabel}>Scheduled</Text>
+        </View>
+        <View style={styles.legendItem}>
+          <View style={[styles.legendDot, { backgroundColor: '#F56B80' }]} />
+          <Text style={styles.legendLabel}>Skipped</Text>
+        </View>
+      </View>
+
+      {/* Renew Button */}
+      <TouchableOpacity style={styles.renewButton}>
+        <Text style={styles.renewButtonText}>Renew Your Plan</Text>
+      </TouchableOpacity>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#F5F5F5',
+  container: { flex: 1, backgroundColor: '#fff' },
+  headerBackground: {
+    backgroundColor: '#FF511A',
+    paddingBottom: 20,
+    borderBottomLeftRadius: 24,
+    borderBottomRightRadius: 24,
+    marginBottom: 10
   },
-  scrollViewContent: {
-    paddingHorizontal: 16,
-    paddingTop: 10,
-    flex: 1,
-  },
-  header: {
+  headerRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 16,
-    height: 120,
-    paddingTop: 40,
-    borderBottomLeftRadius: 30,
-    borderBottomRightRadius: 30,
-    marginBottom: 0,
-  },
-  backButton: {
-    paddingRight: 10,
+    paddingTop: 50,
+    paddingLeft: 16
   },
   headerTitle: {
     color: '#fff',
-    fontSize: 20,
     fontWeight: 'bold',
+    fontSize: fontSizes.title,
+    fontFamily: fonts.bold,
+    marginLeft: 14
   },
   planCard: {
-    backgroundColor: 'white',
-    borderRadius: 15,
-    padding: 20,
-    marginBottom: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
+    marginHorizontal: 22,
+    marginTop: 20,
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    padding: 18,
     elevation: 3,
+    borderWidth: 1,
+    borderColor: '#F2F2F2',
+    shadowColor: '#F2F2F2',
+    shadowOpacity: 0.3,
+    shadowRadius: 4
   },
-  planCardHeader: {
-    fontSize: 12,
+  label: {
+    color: '#acacac',
+    fontSize: fontSizes.label,
+    fontWeight: 'bold',
+    fontFamily: fonts.semiBold,
+    letterSpacing: 1
+  },
+  planName: {
+    fontWeight: 'bold',
+    fontSize: fontSizes.subtitle,
+    fontFamily: fonts.bold,
+    marginTop: 8
+  },
+  deliveredContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 22,
+    marginTop: 24,
+    marginBottom: 2
+  },
+  deliveredLabel: {
+    fontSize: fontSizes.input,
     color: '#888',
-    fontWeight: 'bold',
-    marginBottom: 5,
+    flex: 1,
+    letterSpacing: 1,
+    fontWeight: '600',
+    fontFamily: fonts.semiBold,
   },
-  planCardTitle: {
-    fontSize: 18,
+  deliveredCount: {
+    fontSize: fontSizes.input,
+    color: '#222',
     fontWeight: 'bold',
-    color: '#000',
+    fontFamily: fonts.bold,
   },
-  sectionContainer: {
+  progressBarBackground: {
+    height: 8,
+    borderRadius: 6,
+    backgroundColor: '#ececec',
+    marginHorizontal: 22,
+    marginBottom: 18,
+    marginTop: 3,
+    width: '86%'
+  },
+  progressBarFill: {
+    width: '36%',
+    height: 8,
+    borderRadius: 8,
+    backgroundColor: '#38C173'
+  },
+  noticeBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFF9C4',
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    marginHorizontal: 22,
+    marginBottom: 18
+  },
+  noticeTitle: {
+    fontWeight: 'bold',
+    color: '#FFB300',
+    fontSize: fontSizes.subtitle,
+    fontFamily: fonts.semiBold,
+  },
+  noticeText: {
+    color: '#8D6E63',
+    fontSize: fontSizes.input,
+    fontFamily: fonts.regular,
+  },
+  trackerLabel: {
+    color: '#888',
+    fontWeight: '800',
+    marginTop: 4,
+    marginBottom: 7,
+    fontSize: fontSizes.subtitle,
+    fontFamily: fonts.semiBold,
+    letterSpacing: 1,
+    marginHorizontal: 22
+  },
+  calendarContainer: {
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    padding: 5,
+    marginHorizontal: 8
+  },
+  weekRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 5,
+    marginVertical: 2
   },
-  sectionHeader: {
-    fontSize: 14,
+  dayHeader: {
+    flex: 1,
+    textAlign: 'center',
     color: '#888',
     fontWeight: 'bold',
+    fontSize: fontSizes.subtitle,
+    fontFamily: fonts.semiBold,
   },
-  tiffinCount: {
-    fontSize: 14,
-    color: '#333',
-    fontWeight: 'bold',
-  },
-  progressBarContainer: {
-    height: 10,
-    backgroundColor: '#e0e0e0',
-    borderRadius: 5,
-    overflow: 'hidden',
-    marginBottom: 20,
-  },
-  progressBar: {
-    height: '100%',
-    borderRadius: 5,
-  },
-  alertBanner: {
-    flexDirection: 'row',
+  dayCircle: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: '#f2f2f2',
+    justifyContent: 'center',
     alignItems: 'center',
-    padding: 15,
-    borderRadius: 15,
-    marginBottom: 20,
+    marginHorizontal: 1,
+    marginVertical: 2
   },
-  alertIcon: {
-    marginRight: 10,
+  deliveredCircle: { backgroundColor: '#38C173' },
+  scheduledCircle: { backgroundColor: '#FFD600' },
+  skippedCircle: { backgroundColor: '#F56B80' },
+  dayEmpty: { flex: 1, width: 32, height: 32, marginHorizontal: 1 },
+  dayText: {
+    color: '#111',
+    fontWeight: 'bold',
+    fontFamily: fonts.bold,
   },
-  alertText: {
-    flex: 1,
-    fontSize: 12,
-  },
-  trackerContainer: {
-    marginBottom: 20,
-  },
-  calendar: {
-    backgroundColor: 'white',
-    padding: 15,
-    borderRadius: 15,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
-  },
-  legendContainer: {
+  legendRow: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginBottom: 20,
-    marginTop: 10,
+    justifyContent: 'center',
+    marginVertical: 14
   },
   legendItem: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginHorizontal: 10
   },
-  legendColor: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    marginRight: 5,
+  legendDot: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    marginRight: 5
   },
-  legendText: {
-    fontSize: 12,
-    color: '#666',
+  legendLabel: {
+    color: '#8D8D8D',
+    fontSize: fontSizes.input,
+    fontFamily: fonts.regular,
   },
   renewButton: {
-    padding: 15,
-    borderRadius: 25,
+    backgroundColor: '#FF511A',
+    padding: 17,
+    borderRadius: 28,
     alignItems: 'center',
-    marginBottom: 20,
+    marginVertical: 16,
+    marginHorizontal: 22,
+    marginBottom: 32,
+    elevation: 2
   },
   renewButtonText: {
     color: '#fff',
     fontWeight: 'bold',
-    fontSize: 16,
-  },
-  bottomNav: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    height: 60,
-    backgroundColor: '#fff',
-    borderTopWidth: 1,
-    borderTopColor: '#f0f0f0',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: -2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 5,
-  },
-  navItem: {
-    alignItems: 'center',
-  },
-  activeNavItem: {
-    backgroundColor: '#FF6F3C',
-    borderRadius: 25,
-    paddingHorizontal: 15,
-    paddingVertical: 8,
-    marginTop: -20,
-  },
-  navText: {
-    fontSize: 10,
-    color: '#888',
-  },
-  activeNavText: {
-    color: '#fff',
-  },
+    fontSize: fontSizes.subtitle,
+    fontFamily: fonts.semiBold,
+  }
 });
 
 export default ActivePlans;

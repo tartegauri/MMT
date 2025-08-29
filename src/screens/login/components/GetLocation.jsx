@@ -223,6 +223,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useTheme } from '../../../context/ThemeContext';
 import Button from '../../../components/common/Button';
 import LinearGradient from 'react-native-linear-gradient';
+import { fontSizes, spacing } from '../../../styles/styles';
 
 const { height } = Dimensions.get('window');
 
@@ -230,7 +231,6 @@ const GetLocation = ({ navigation, route }) => {
   const { colors } = useTheme();
   const name = route?.params?.name || 'User';
 
-  // Fade-in + slide-up animation for card content
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const translateYAnim = useRef(new Animated.Value(40)).current;
 
@@ -275,32 +275,38 @@ const GetLocation = ({ navigation, route }) => {
       </View>
 
       {/* Card */}
-      <View style={{
-        flex: 1,
-        backgroundColor: colors.secondary,
-        marginTop: -40,
-        borderTopLeftRadius: 32,
-        borderTopRightRadius: 32,
-        paddingHorizontal: 24,
-        paddingTop: 40,
-      }}>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: colors.secondary,
+          marginTop: -40,
+          borderTopLeftRadius: 32,
+          borderTopRightRadius: 32,
+          paddingHorizontal: 24,
+          paddingTop: 40,
+        }}
+      >
         <Animated.View style={{ opacity: fadeAnim, transform: [{ translateY: translateYAnim }] }}>
-          <Text style={{
-            fontSize: 24,
-            fontWeight: '700',
-            color: colors.textPrimary,
-            marginBottom: 0
-          }}>
+          <Text
+            style={{
+              fontSize: fontSizes.title + 2, // Slightly larger for greeting
+              fontWeight: '700',
+              color: colors.textPrimary,
+              marginBottom: 0,
+            }}
+          >
             Hi, {name}
           </Text>
-          <Text style={{
-            fontSize: 16,
-            color: colors.textPrimary,
-            opacity: 0.7,
-            fontWeight: '400',
-            marginBottom: 40,
-            marginTop: 0
-          }}>
+          <Text
+            style={{
+              fontSize: fontSizes.subtitle,
+              color: colors.textPrimary,
+              opacity: 0.7,
+              fontWeight: '400',
+              marginBottom: spacing.large * 1.25,
+              marginTop: 0,
+            }}
+          >
             where should we deliver your tiffin? <Text>📍</Text>
           </Text>
 
@@ -308,7 +314,7 @@ const GetLocation = ({ navigation, route }) => {
             text="Use Current location"
             onPress={() => {}}
             style={{
-              marginBottom: 18,
+              marginBottom: spacing.medium,
               height: 56,
               borderRadius: 28,
               backgroundColor: colors.primary,
@@ -319,7 +325,7 @@ const GetLocation = ({ navigation, route }) => {
             text="Enter Manually"
             onPress={() => navigation.navigate('ManualLocation', { name })}
             style={{
-              marginBottom: 16,
+              marginBottom: spacing.medium,
               height: 56,
               borderRadius: 28,
               backgroundColor: '#FFA891',

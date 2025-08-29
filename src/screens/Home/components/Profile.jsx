@@ -12,10 +12,9 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from '../../../context/ThemeContext';
+import { fontSizes, fonts } from '../../../styles/styles';
 
 const PROFILE_IMAGE = require('E:/tartegauri30/MMTApp/src/assets/onboardingImg.jpg');
-
-
 
 const Profile = ({ navigation }) => {
   const { colors, theme } = useTheme();
@@ -133,7 +132,8 @@ const styles = StyleSheet.create({
   headerText: {
     color: '#fff',
     fontWeight: 'bold',
-    fontSize: 18,
+    fontSize: fontSizes.title,
+    fontFamily: fonts.bold,
     letterSpacing: 0.18,
   },
   profileSection: {
@@ -181,14 +181,16 @@ const styles = StyleSheet.create({
   proBadgeText: {
     color: '#fff',
     fontWeight: 'bold',
-    fontSize: 11.5,
+    fontSize: fontSizes.label - 4,
+    fontFamily: fonts.semiBold,
     letterSpacing: 0.1,
     marginRight: 0,
   },
   nameText: {
     marginTop: 26,
     fontWeight: 'bold',
-    fontSize: 23,
+    fontSize: fontSizes.title + 1,
+    fontFamily: fonts.bold,
     color: '#1A1A1A',
     textAlign: 'center',
     marginBottom: 2,
@@ -203,7 +205,8 @@ const styles = StyleSheet.create({
     marginBottom: 9,
     color: '#9B9B9B',
     fontWeight: '500',
-    fontSize: 13,
+    fontSize: fontSizes.label,
+    fontFamily: fonts.semiBold,
     letterSpacing: 0.13,
   },
   simpleOptionRow: {
@@ -216,9 +219,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   simpleOptionLabel: {
-    fontSize: 16,
+    fontSize: fontSizes.input,
     color: '#222',
     fontWeight: '500',
+    fontFamily: fonts.semiBold,
     letterSpacing: 0.13,
   },
   signOutWrapper: {
@@ -232,14 +236,14 @@ const styles = StyleSheet.create({
     borderRadius: 28, // more rounded
     borderWidth: 1.8,
     borderColor: '#E2E0E7',
-    // backgroundColor: '#FFF7F0',
     paddingVertical: 14,
     justifyContent: 'center',
   },
   signOutText: {
     color: '#FF692E',
     fontWeight: 'bold',
-    fontSize: 15,
+    fontSize: fontSizes.button - 2,
+    fontFamily: fonts.semiBold,
     marginLeft: 8,
     letterSpacing: 0.23,
   },

@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { fontSizes, fonts } from '../../../styles/styles';
 
 const PROFILE_IMAGE = require('E:/tartegauri30/MMTApp/src/assets/onboardingImg.jpg');
 
@@ -77,8 +78,13 @@ const PersonalDetails = ({ navigation }) => {
             activeOpacity={0.8}
             onPress={() => setShowGenders(!showGenders)}
           >
-            <Text style={{ color: '#171717', fontSize: 16 }}>{gender}</Text>
-            <Icon name="chevron-down-outline" size={20} color="#757575" style={{ position: 'absolute', right: 14 }} />
+            <Text style={styles.genderText}>{gender}</Text>
+            <Icon
+              name="chevron-down-outline"
+              size={20}
+              color="#757575"
+              style={styles.dropdownIcon}
+            />
           </TouchableOpacity>
           {showGenders && (
             <View style={styles.dropdown}>
@@ -150,12 +156,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 22,
-    marginTop: 40,
+    marginTop: 60,
   },
   headerText: {
     color: '#fff',
     fontWeight: 'bold',
-    fontSize: 19,
+    fontSize: fontSizes.title,
+    fontFamily: fonts.bold,
     letterSpacing: 0.15,
     marginLeft: 14,
   },
@@ -194,7 +201,8 @@ const styles = StyleSheet.create({
     marginTop: 12,
     color: '#272727',
     fontWeight: '500',
-    fontSize: 15,
+    fontSize: fontSizes.label,
+    fontFamily: fonts.semiBold,
   },
   input: {
     borderWidth: 1,
@@ -202,17 +210,28 @@ const styles = StyleSheet.create({
     borderRadius: 13,
     paddingVertical: 11,
     paddingHorizontal: 16,
-    fontSize: 16,
+    fontSize: fontSizes.input,
+    fontFamily: fonts.regular,
     color: '#171717',
-    marginBottom: 6,
+    marginBottom: 3,
     backgroundColor: '#fff',
+  },
+  genderText: {
+    color: '#171717',
+    fontSize: fontSizes.input,
+    fontFamily: fonts.regular,
+  },
+  dropdownIcon: {
+    position: 'absolute',
+    right: 14,
+    marginTop: 11,
   },
   dropdown: {
     backgroundColor: '#fff',
     borderWidth: 1,
     borderColor: '#DDD',
     borderRadius: 13,
-    marginTop: -8,
+    marginTop: 5,
     marginBottom: 8,
     overflow: 'hidden',
   },
@@ -221,8 +240,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
   },
   dropdownText: {
-    fontSize: 16,
+    fontSize: fontSizes.input,
     color: '#171717',
+    fontFamily: fonts.regular,
   },
   saveWrapper: {
     marginHorizontal: 18,
@@ -239,7 +259,8 @@ const styles = StyleSheet.create({
   saveButtonText: {
     color: '#fff',
     fontWeight: 'bold',
-    fontSize: 18,
+    fontSize: fontSizes.title - 4,
+    fontFamily: fonts.semiBold,
     letterSpacing: 0.17,
   },
 });
