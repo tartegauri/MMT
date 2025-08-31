@@ -9,24 +9,41 @@ import {
   Dimensions,
   TouchableOpacity,
   Animated,
+  ActivityIndicator,
 } from 'react-native';
 import { useTheme } from '../../context/ThemeContext';
 import Button from '../../components/common/Button';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { fontSizes, fonts } from '../../styles/styles';
+import { useQuery } from '@tanstack/react-query';
+import useTiffin from '../../services/useTiffin';
+import useMess from '../../services/useMess';
 
 const { width } = Dimensions.get('window');
 
-const MessScreen = () => {
+const MessScreen = (route) => {
+  const { messId } = route.route.params || "";
   const { colors } = useTheme();
   const [selectedPlan, setSelectedPlan] = useState('');
   const navigation = useNavigation();
 
-  // Animation refs for thali cards
-  const thaliAnim = [useRef(new Animated.Value(0)).current, useRef(new Animated.Value(0)).current];
+  const { getTiffinsByMessId } = useTiffin();
+  const { getMessById } = useMess();
 
-  // Animation ref for whole page
+  // Tiffins for this mess
+  const { data: tiffinData, isLoading: tiffinLoading, isError: tiffinError } = useQuery({
+    queryKey: ["messtiffin", messId],
+    queryFn: () => getTiffinsByMessId(messId),
+  });
+
+  // Mess details
+  const { data: messData, isLoading: messLoading, isError: messError } = useQuery({
+    queryKey: ["messdetails", messId],
+    queryFn: () => getMessById(messId),
+  });
+
+  const thaliAnim = [useRef(new Animated.Value(0)).current, useRef(new Animated.Value(0)).current];
   const pageAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -37,16 +54,8 @@ const MessScreen = () => {
         useNativeDriver: true,
       }),
       Animated.stagger(120, [
-        Animated.timing(thaliAnim[0], {
-          toValue: 1,
-          duration: 500,
-          useNativeDriver: true,
-        }),
-        Animated.timing(thaliAnim[1], {
-          toValue: 1,
-          duration: 500,
-          useNativeDriver: true,
-        }),
+        Animated.timing(thaliAnim[0], { toValue: 1, duration: 500, useNativeDriver: true }),
+        Animated.timing(thaliAnim[1], { toValue: 1, duration: 500, useNativeDriver: true }),
       ]),
     ]).start();
   }, [pageAnim, thaliAnim]);
@@ -55,6 +64,30 @@ const MessScreen = () => {
     inputRange: [0, 1],
     outputRange: [40, 0],
   });
+
+  const messDetails = messData?.data?.data || {};
+  const messName = messDetails?.mess_name || "Mess Name";
+  const messDesc = `Every tiffin from ${messName} brings soft rotis, fresh dal, and a touch of home — light on oil, big on comfort.`;
+  //Special
+  const tiffins = tiffinData?.data?.tiffins || [];
+  console.log(tiffins)
+  //const tiffinId = tiffinData?.data?.
+  if (tiffinLoading || messLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.background }}>
+        <ActivityIndicator size="large" color="#FF6F3C" />
+        <Text style={{ marginTop: 12, fontFamily: fonts.semiBold }}>Loading mess details...</Text>
+      </View>
+    );
+  }
+
+  if (tiffinError || messError) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.background }}>
+        <Text style={{ color: 'red', fontFamily: fonts.semiBold }}>Error loading mess info.</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -67,22 +100,26 @@ const MessScreen = () => {
       >
         <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
           {/* Banner Image */}
-          <Image source={require('../../assets/foodImg.png')} style={styles.headerImage} />
+          <Image
+            source={require('../../assets/foodImg.png')}
+            style={styles.headerImage}
+            // source={{ uri: messDetails?.mess_photos?.[0] }}
+          />
 
           {/* Mess Card */}
           <View style={styles.messCard}>
             <View style={styles.messCardContent}>
               <View style={styles.messTitleRow}>
-                <Text style={[styles.messName, { fontFamily: fonts.semiBold, fontSize: fontSizes.subtitle, color: '#222' }]}>
-                  Dehwar mess
+                <Text style={[styles.messName, { fontFamily: fonts.semiBold, fontSize: fontSizes.subtitle }]}>
+                  {messName}
                 </Text>
                 <Image source={require('../../assets/fssai.png')} style={styles.fssaiLogo} resizeMode="contain" />
               </View>
-              <Text style={[styles.messDetails, { fontFamily: fonts.semiBold, fontSize: fontSizes.label, color: '#666' }]}>
+              <Text style={[styles.messDetails, { fontFamily: fonts.semiBold, fontSize: fontSizes.label }]}>
                 Home Chef | Pause Anytime
               </Text>
-              <Text style={[styles.messDesc, { fontFamily: fonts.semiBold, fontSize: fontSizes.label, color: '#444' }]}>
-                Every tiffin from Dehwar's Mess brings soft rotis, fresh dal, and a touch of home — light on oil, big on comfort.
+              <Text style={[styles.messDesc, { fontFamily: fonts.semiBold, fontSize: fontSizes.label }]}>
+                {messDesc}
               </Text>
             </View>
             <TouchableOpacity style={styles.knowMoreBtn} onPress={() => navigation.navigate('Home')}>
@@ -94,80 +131,66 @@ const MessScreen = () => {
 
           {/* Thali Options */}
           <View style={styles.thaliHeaderRow}>
-            <Text style={[styles.thaliHeaderText, { fontFamily: fonts.bold, fontSize: fontSizes.subtitle }]}>Thali Options</Text>
+            <Text style={[styles.thaliHeaderText, { fontFamily: fonts.bold, fontSize: fontSizes.subtitle }]}>
+              Thali Options
+            </Text>
             <View style={styles.thaliHeaderLine} />
           </View>
 
-          {/* Thali Card 1 */}
-          <Animated.View
-            style={{
-              opacity: thaliAnim[0],
-              transform: [{ translateY: thaliAnim[0].interpolate({ inputRange: [0, 1], outputRange: [40, 0] }) }],
-            }}
-          >
-            <TouchableOpacity
-              style={styles.thaliCard}
-              onPress={() => navigation.navigate('NormalVegThali')}
-              activeOpacity={0.9}
+          {tiffins.map((tiffin, idx) => (
+            <Animated.View
+              key={tiffin._id}
+              style={{
+                opacity: thaliAnim[idx % 2],
+                transform: [
+                  {
+                    translateY: thaliAnim[idx % 2].interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [40, 0],
+                    }),
+                  },
+                ],
+              }}
             >
-              <View style={{ position: 'relative', borderRadius: 20, overflow: 'hidden' }}>
-                <Image source={require('../../assets/Vector.png')} style={styles.thaliImage} />
-              </View>
-              <View style={styles.thaliTextBelow}>
-                <Text style={[styles.thaliTitle, { fontFamily: fonts.bold, fontSize: fontSizes.subtitle }]}>Normal Veg Thali</Text>
-                <Text
-                  style={[styles.thaliSubtitle, { fontFamily: fonts.semiBold, fontSize: 11 }] /* smaller font size inline here */}
-                >
-                  3 Chapatis, 1 Sabji Dal & Rice
-                </Text>
-              </View>
-              <View style={styles.thaliArrowCircle}>
-                <AntDesign name="arrowright" size={24} color="#FF6F3C" />
-              </View>
-            </TouchableOpacity>
-          </Animated.View>
-
-          {/* Thali Card 2 */}
-          <Animated.View
-            style={{
-              opacity: thaliAnim[1],
-              transform: [{ translateY: thaliAnim[1].interpolate({ inputRange: [0, 1], outputRange: [40, 0] }) }],
-            }}
-          >
-            <TouchableOpacity
-              style={styles.thaliCard}
-              onPress={() => navigation.navigate('NormalVegThali')}
-              activeOpacity={0.9}
-            >
-              <View style={{ position: 'relative', borderRadius: 20, overflow: 'hidden' }}>
-                <Image source={require('../../assets/Vector.png')} style={styles.thaliImage} />
-              </View>
-              <View style={styles.thaliTextBelow}>
-                <Text style={[styles.thaliTitle, { fontFamily: fonts.bold, fontSize: fontSizes.subtitle }]}>Special Veg Thali</Text>
-                <Text
-                  style={[styles.thaliSubtitle, { fontFamily: fonts.semiBold, fontSize: 11 }] /* smaller font size inline here */}
-                >
-                  4 Chapatis, 2 Sabjis, Dessert
-                </Text>
-              </View>
-              <View style={styles.thaliArrowCircle}>
-                <AntDesign name="arrowright" size={24} color="#FF6F3C" />
-              </View>
-            </TouchableOpacity>
-          </Animated.View>
+              <TouchableOpacity
+                style={styles.thaliCard}
+                onPress={() => navigation.navigate('SpecialVegThali', { tiffinId: tiffin._id })}
+                activeOpacity={0.9}
+              >
+                <View style={{ position: 'relative', borderRadius: 20, overflow: 'hidden' }}>
+                  <Image
+                    source={require('../../assets/Vector.png')}
+                    style={styles.thaliImage}
+                    // source={{ uri: tiffin.photos?.[0] }}
+                  />
+                </View>
+                <View style={styles.thaliTextBelow}>
+                  <Text style={[styles.thaliTitle, { fontFamily: fonts.bold, fontSize: fontSizes.subtitle }]}>
+                    {tiffin.type === "NORMAL" ? "Normal Veg Thali" : "Special Veg Thali"}
+                  </Text>
+                  <Text style={[styles.thaliSubtitle, { fontFamily: fonts.semiBold, fontSize: 11 }]}>
+                    ₹{tiffin.maximum_price} / meal
+                  </Text>
+                </View>
+                <View style={styles.thaliArrowCircle}>
+                  <AntDesign name="arrowright" size={24} color="#FF6F3C" />
+                </View>
+              </TouchableOpacity>
+            </Animated.View>
+          ))}
 
           {/* Available Plans */}
           <View style={styles.plansHeaderRow}>
-            <Text style={[styles.plansHeaderText, { fontFamily: fonts.bold, fontSize: fontSizes.subtitle }]}>Available Plans</Text>
+            <Text style={[styles.plansHeaderText, { fontFamily: fonts.bold, fontSize: fontSizes.subtitle }]}>
+              Available Plans
+            </Text>
             <View style={styles.plansHeaderLine} />
           </View>
-          {plans.map(plan => (
+
+          {plans.map((plan) => (
             <TouchableOpacity
               key={plan.key}
-              style={[
-                styles.planCard,
-                selectedPlan === plan.key && styles.selectedCard,
-              ]}
+              style={[styles.planCard, selectedPlan === plan.key && styles.selectedCard]}
               onPress={() => setSelectedPlan(plan.key)}
               activeOpacity={0.85}
             >
@@ -185,9 +208,7 @@ const MessScreen = () => {
                         color={colors.primary}
                         style={styles.planTickIcon}
                       />
-                      <Text style={[styles.planDetail, { fontFamily: fonts.semiBold, fontSize: 14 }]}>
-                        {line}
-                      </Text>
+                      <Text style={[styles.planDetail, { fontFamily: fonts.semiBold, fontSize: 14 }]}>{line}</Text>
                     </View>
                   ))}
                 </View>
@@ -208,45 +229,16 @@ const MessScreen = () => {
 };
 
 const plans = [
-  {
-    key: 'Trial',
-    title: 'Trial',
-    price: '₹50 / meal',
-    details: ['Try your first meal for just ₹50'],
-  },
-  {
-    key: 'Daily',
-    title: 'Daily Plan',
-    price: '₹96 / meal',
-    details: ['No commitment', 'Order anytime'],
-  },
-  {
-    key: 'Weekly',
-    title: 'Weekly Plan',
-    price: '₹90 / meal × 14 meals',
-    details: ['Valid for 10 days', 'Pause anytime*'],
-  },
-  {
-    key: 'Monthly',
-    title: 'Monthly Plan',
-    price: '₹87 / meal × 60 meals',
-    details: ['Valid for 40 days', 'Best for regulars', 'Pause anytime *'],
-  },
+  { key: 'Trial', title: 'Trial', price: '₹50 / meal', details: ['Try your first meal for just ₹50'] },
+  { key: 'Daily', title: 'Daily Plan', price: '₹96 / meal', details: ['No commitment', 'Order anytime'] },
+  { key: 'Weekly', title: 'Weekly Plan', price: '₹90 / meal × 14 meals', details: ['Valid for 10 days', 'Pause anytime*'] },
+  { key: 'Monthly', title: 'Monthly Plan', price: '₹87 / meal × 60 meals', details: ['Valid for 40 days', 'Best for regulars', 'Pause anytime *'] },
 ];
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  scrollContent: {
-    padding: 16,
-  },
-  headerImage: {
-    width,
-    height: 200,
-    resizeMode: 'cover',
-    marginLeft: -16,
-  },
+  container: { flex: 1 },
+  scrollContent: { padding: 16 },
+  headerImage: { width, height: 200, resizeMode: 'cover', marginLeft: -16 },
   messCard: {
     backgroundColor: '#fff',
     borderRadius: 20,
@@ -259,47 +251,19 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 3 },
     overflow: 'hidden',
   },
-  messCardContent: {
-    padding: 16,
-  },
-  messTitleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 4,
-  },
-  messName: {
-    fontSize: 18,
-    fontWeight: '700',
-    marginRight: 6,
-    color: '#222',
-  },
-  fssaiLogo: {
-    width: 36,
-    height: 16,
-  },
-  messDetails: {
-    fontSize: 13,
-    color: '#666',
-    fontWeight: '600',
-    marginBottom: 4,
-  },
-  messDesc: {
-    fontSize: 13,
-    color: '#444',
-    marginBottom: 10,
-  },
+  messCardContent: { padding: 16 },
+  messTitleRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 4 },
+  messName: { fontSize: 18, fontWeight: '700', marginRight: 6, color: '#222' },
+  fssaiLogo: { width: 36, height: 16 },
+  messDetails: { fontSize: 13, color: '#666', fontWeight: '600', marginBottom: 4 },
+  messDesc: { fontSize: 13, color: '#444', marginBottom: 10 },
   knowMoreBtn: {
     backgroundColor: '#FFD600',
     paddingVertical: 14,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
   },
-  knowMoreText: {
-    fontSize: 16,
-    color: '#111',
-    fontWeight: '700',
-    textAlign: 'center',
-  },
+  knowMoreText: { fontSize: 16, color: '#111', fontWeight: '700', textAlign: 'center' },
   thaliCard: {
     backgroundColor: '#fff',
     borderRadius: 20,
@@ -309,11 +273,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 8,
   },
-  thaliImage: {
-    width: '100%',
-    height: 160,
-    resizeMode: 'cover',
-  },
+  thaliImage: { width: '100%', height: 160, resizeMode: 'cover' },
   thaliTextBelow: {
     paddingVertical: 2,
     paddingHorizontal: 14,
@@ -321,17 +281,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     marginTop: -58,
   },
-  thaliTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#111',
-    marginTop: 14,
-  },
-  thaliSubtitle: {
-    fontSize: 15, // original size replaced inline where used
-    color: '#555',
-    marginTop: 2,
-  },
+  thaliTitle: { fontSize: 18, fontWeight: 'bold', color: '#111', marginTop: 14 },
+  thaliSubtitle: { fontSize: 15, color: '#555', marginTop: 2 },
   thaliArrowCircle: {
     position: 'absolute',
     top: 16,
@@ -348,25 +299,9 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 4,
   },
-  plansHeaderRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 18,
-  },
-  plansHeaderText: {
-    fontSize: 18,
-    fontWeight: '900',
-    color: '#111',
-    marginRight: 12,
-  },
-  plansHeaderLine: {
-    flex: 1,
-    height: 2,
-    backgroundColor: '#222',
-    borderRadius: 2,
-    marginTop: 2,
-  },
+  plansHeaderRow: { flexDirection: 'row', alignItems: 'center', marginTop: 10, marginBottom: 18 },
+  plansHeaderText: { fontSize: 18, fontWeight: '900', color: '#111', marginRight: 12 },
+  plansHeaderLine: { flex: 1, height: 2, backgroundColor: '#222', borderRadius: 2, marginTop: 2 },
   planCard: {
     backgroundColor: '#fff',
     borderRadius: 14,
@@ -376,81 +311,20 @@ const styles = StyleSheet.create({
     borderColor: '#111',
     borderWidth: 1,
   },
-  selectedCard: {
-    backgroundColor: '#FFF3EC',
-  },
-  planRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  planLeft: {
-    flex: 1.2,
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-  },
-  planName: {
-    fontSize: 20,
-    fontWeight: '900',
-    color: '#222',
-    marginBottom: 2,
-  },
-  planPrice: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#FF6F3C',
-    marginBottom: 0,
-  },
-  planRight: {
-    flex: 2,
-    alignItems: 'flex-end',
-    justifyContent: 'center',
-  },
-  planDetail: {
-    fontSize: 14,
-    color: '#444',
-    fontWeight: '500',
-    marginBottom: 2,
-    textAlign: 'right',
-  },
-  selectText: {
-    fontSize: 13,
-    fontWeight: '600',
-    marginVertical: 14,
-    color: '#222',
-  },
-  proceedBtn: {
-    height: 50,
-    borderRadius: 30,
-    backgroundColor: '#FF6F3C',
-    marginBottom: 32,
-  },
-  planDetailRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    marginBottom: 2,
-  },
-  planTickIcon: {
-    marginRight: 5,
-  },
-  thaliHeaderRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 18,
-  },
-  thaliHeaderLine: {
-    flex: 1,
-    height: 2,
-    backgroundColor: '#222',
-    borderRadius: 2,
-    marginLeft: 12,
-  },
-  thaliHeaderText: {
-    fontSize: 16,
-    fontWeight: '900',
-    color: '#111',
-  },
+  selectedCard: { backgroundColor: '#FFF3EC' },
+  planRow: { flexDirection: 'row', alignItems: 'center' },
+  planLeft: { flex: 1.2, alignItems: 'flex-start', justifyContent: 'center' },
+  planName: { fontSize: 20, fontWeight: '900', color: '#222', marginBottom: 2 },
+  planPrice: { fontSize: 16, fontWeight: '700', color: '#FF6F3C', marginBottom: 0 },
+  planRight: { flex: 2, alignItems: 'flex-end', justifyContent: 'center' },
+  planDetail: { fontSize: 14, color: '#444', fontWeight: '500', marginBottom: 2, textAlign: 'right' },
+  selectText: { fontSize: 13, fontWeight: '600', marginVertical: 14, color: '#222' },
+  proceedBtn: { height: 50, borderRadius: 30, backgroundColor: '#FF6F3C', marginBottom: 32 },
+  planDetailRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', marginBottom: 2 },
+  planTickIcon: { marginRight: 5 },
+  thaliHeaderRow: { flexDirection: 'row', alignItems: 'center', marginTop: 10, marginBottom: 18 },
+  thaliHeaderLine: { flex: 1, height: 2, backgroundColor: '#222', borderRadius: 2, marginLeft: 12 },
+  thaliHeaderText: { fontSize: 16, fontWeight: '900', color: '#111' },
 });
 
 export default MessScreen;

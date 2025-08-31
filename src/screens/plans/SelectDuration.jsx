@@ -13,16 +13,17 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useTheme } from '../../context/ThemeContext';
 import Button from '../../components/common/Button';
 import { fontSizes, spacing } from '../../styles/styles';
+import userStore from '../../store/userStore';
 
 const { height } = Dimensions.get('window');
 
-const SelectDuration = ({ navigation }) => {
+const SelectDuration = ({ navigation, route }) => {
   const { colors } = useTheme();
+  const {formdata} = route?.params;
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const translateYAnim = useRef(new Animated.Value(40)).current;
-  const [selected, setSelected] = useState('monthly');
-  const userName = 'Tabish';
-
+  const [selected, setSelected] = useState('MONTHLY');
+  const userName = userStore.getState().name;
   useEffect(() => {
     Animated.parallel([
       Animated.timing(fadeAnim, {
@@ -37,7 +38,10 @@ const SelectDuration = ({ navigation }) => {
       }),
     ]).start();
   }, [fadeAnim, translateYAnim]);
-
+  const handleSubmit = () =>{
+    let data ={...formdata,subscriptionType:selected}
+    navigation.navigate('SelectDessert',{data})
+  }
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
       <StatusBar barStyle={colors.background === '#101010' ? 'light-content' : 'dark-content'} />
@@ -110,26 +114,26 @@ const SelectDuration = ({ navigation }) => {
           </View>
           {/* Subscription Cards */}
           <View style={{ gap: 16, marginBottom: spacing.medium }}>
-            {/* Daily Card */}
+            {/* DAILY Card */}
             <TouchableOpacity
               activeOpacity={0.8}
-              onPress={() => setSelected('daily')}
+              onPress={() => setSelected('DAILY')}
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                backgroundColor: selected === 'daily' ? '#FFD6C9' : '#fff',
+                backgroundColor: selected === 'DAILY' ? '#FFD6C9' : '#fff',
                 borderRadius: 18,
                 borderWidth: 1.5,
-                borderColor: selected === 'daily' ? '#FF6F3C' : '#E0E0E0',
+                borderColor: selected === 'DAILY' ? '#FF6F3C' : '#E0E0E0',
                 overflow: 'hidden',
-                shadowColor: selected === 'daily' ? '#FF6F3C' : '#000',
-                shadowOpacity: selected === 'daily' ? 0.08 : 0.04,
+                shadowColor: selected === 'DAILY' ? '#FF6F3C' : '#000',
+                shadowOpacity: selected === 'DAILY' ? 0.08 : 0.04,
                 shadowRadius: 6,
-                elevation: selected === 'daily' ? 2 : 1,
+                elevation: selected === 'DAILY' ? 2 : 1,
                 minHeight: 64,
               }}
             >
-              {/* Daily Illustration */}
+              {/* DAILY Illustration */}
               <View style={{ width: 64, height: 64, justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
                 <Image
                   source={require('../../assets/backgroundImg.png')}
@@ -141,7 +145,7 @@ const SelectDuration = ({ navigation }) => {
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <Text style={{ fontSize: 26, fontWeight: '700', color: '#222', flex: 1 }}>Daily</Text>
                   <View style={{ marginRight: 16 }}>
-                    {selected === 'daily' ? (
+                    {selected === 'DAILY' ? (
                       <AntDesign name="checksquare" size={26} color="#FF6F3C" />
                     ) : (
                       <AntDesign name="border" size={26} color="#B0B0B0" />
@@ -156,19 +160,19 @@ const SelectDuration = ({ navigation }) => {
             {/* Weekly Card */}
             <TouchableOpacity
               activeOpacity={0.8}
-              onPress={() => setSelected('weekly2')}
+              onPress={() => setSelected('WEEKLY')}
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                backgroundColor: selected === 'weekly2' ? '#FFD6C9' : '#fff',
+                backgroundColor: selected === 'WEEKLY' ? '#FFD6C9' : '#fff',
                 borderRadius: 18,
                 borderWidth: 1.5,
-                borderColor: selected === 'weekly2' ? '#FF6F3C' : '#E0E0E0',
+                borderColor: selected === 'WEEKLY' ? '#FF6F3C' : '#E0E0E0',
                 overflow: 'hidden',
-                shadowColor: selected === 'weekly2' ? '#FF6F3C' : '#000',
-                shadowOpacity: selected === 'weekly2' ? 0.08 : 0.04,
+                shadowColor: selected === 'WEEKLY' ? '#FF6F3C' : '#000',
+                shadowOpacity: selected === 'WEEKLY' ? 0.08 : 0.04,
                 shadowRadius: 6,
-                elevation: selected === 'weekly2' ? 2 : 1,
+                elevation: selected === 'WEEKLY' ? 2 : 1,
                 minHeight: 64,
               }}
             >
@@ -184,7 +188,7 @@ const SelectDuration = ({ navigation }) => {
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <Text style={{ fontSize: 26, fontWeight: '700', color: '#222', flex: 1 }}>Weekly</Text>
                   <View style={{ marginRight: 16 }}>
-                    {selected === 'weekly2' ? (
+                    {selected === 'WEEKLY' ? (
                       <AntDesign name="checksquare" size={26} color="#FF6F3C" />
                     ) : (
                       <AntDesign name="border" size={26} color="#B0B0B0" />
@@ -196,26 +200,26 @@ const SelectDuration = ({ navigation }) => {
                 </Text>
               </View>
             </TouchableOpacity>
-            {/* Monthly Card */}
+            {/* MONTHLY Card */}
             <TouchableOpacity
               activeOpacity={0.8}
-              onPress={() => setSelected('monthly')}
+              onPress={() => setSelected('MONTHLY')}
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                backgroundColor: selected === 'monthly' ? '#FFD6C9' : '#fff',
+                backgroundColor: selected === 'MONTHLY' ? '#FFD6C9' : '#fff',
                 borderRadius: 18,
                 borderWidth: 1.5,
-                borderColor: selected === 'monthly' ? '#FF6F3C' : '#E0E0E0',
+                borderColor: selected === 'MONTHLY' ? '#FF6F3C' : '#E0E0E0',
                 overflow: 'hidden',
-                shadowColor: selected === 'monthly' ? '#FF6F3C' : '#000',
-                shadowOpacity: selected === 'monthly' ? 0.08 : 0.04,
+                shadowColor: selected === 'MONTHLY' ? '#FF6F3C' : '#000',
+                shadowOpacity: selected === 'MONTHLY' ? 0.08 : 0.04,
                 shadowRadius: 6,
-                elevation: selected === 'monthly' ? 2 : 1,
+                elevation: selected === 'MONTHLY' ? 2 : 1,
                 minHeight: 64,
               }}
             >
-              {/* Monthly Illustration */}
+              {/* MONTHLY Illustration */}
               <View style={{ width: 64, height: 64, justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
                 <Image
                   source={require('../../assets/backgroundImg.png')}
@@ -239,7 +243,7 @@ const SelectDuration = ({ navigation }) => {
                     <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 12 }}>+ SAVER</Text>
                   </View>
                   <View style={{ marginRight: 8 }}>
-                    {selected === 'monthly' ? (
+                    {selected === 'MONTHLY' ? (
                       <AntDesign name="checksquare" size={26} color="#FF6F3C" />
                     ) : (
                       <AntDesign name="border" size={26} color="#B0B0B0" />
@@ -267,7 +271,7 @@ const SelectDuration = ({ navigation }) => {
           {/* Continue Button */}
           <Button
             text="Continue"
-            onPress={() => navigation.navigate('SelectDessert')}
+            onPress={handleSubmit}
             style={{
               backgroundColor: '#FF6F3C',
               borderRadius: 30,

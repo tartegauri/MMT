@@ -13,15 +13,16 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useTheme } from '../../context/ThemeContext';
 import Button from '../../components/common/Button';
 import { fontSizes, spacing } from '../../styles/styles';
-
+import userStore from '../../store/userStore';
 const { height } = Dimensions.get('window');
 
-const SelectDessert = ({ navigation }) => {
+const SelectDessert = ({ navigation,route }) => {
   const { colors } = useTheme();
+  const {data} = route?.params;
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const translateYAnim = useRef(new Animated.Value(40)).current;
   const [selected, setSelected] = useState('yes');
-  const userName = 'Tabish';
+  const userName = userStore.getState().name;
 
   useEffect(() => {
     Animated.parallel([
@@ -37,7 +38,15 @@ const SelectDessert = ({ navigation }) => {
       }),
     ]).start();
   }, [fadeAnim, translateYAnim]);
-
+  const handleSubmit = () =>{
+    let formdata = {}
+    if(selected === 'yes'){
+      formdata = {...data,tiffinType:'SPECIAL'};
+    }else if (selected === 'no'){
+      formdata = {...data,tiffinType:'NORMAL'};
+    }
+    navigation.navigate('KitchenMatching',{formdata});
+  }
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
       <StatusBar barStyle={colors.background === '#101010' ? 'light-content' : 'dark-content'} />
@@ -191,7 +200,7 @@ const SelectDessert = ({ navigation }) => {
           {/* Continue Button */}
           <Button
             text="Continue"
-            onPress={() => navigation.navigate('KitchenMatching')}
+            onPress={handleSubmit}
             style={{
               backgroundColor: '#FF6F3C',
               borderRadius: 30,

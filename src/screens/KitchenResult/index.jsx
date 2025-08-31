@@ -8,12 +8,15 @@ import userStore from '../../store/userStore';
 const { width } = Dimensions.get('window');
 const IMAGE_SIZE = width * 0.72;
 
-const KitchenResult = ({ navigation }) => {
+const KitchenResult = ({ navigation,route }) => {
   const { colors } = useTheme();
+  const { address,messName,tiffinType,tiffin} = route?.params?.responseData || {}
   const userName =userStore.getState().name;
-
+  console.log(route.params)
   const cardAnim = useRef(new Animated.Value(0)).current;
-
+  const tiffinId = tiffin?._id;
+  const messId = tiffin?.mess_id;
+  const imageUrl = tiffin.photos[0];
   useEffect(() => {
     Animated.timing(cardAnim, {
       toValue: 1,
@@ -31,7 +34,7 @@ const KitchenResult = ({ navigation }) => {
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={styles.locationRow}>
         <Ionicons name="location-sharp" size={18} color={colors.textPrimary} style={styles.locationIcon} />
-        <Text style={[styles.locationText, { color: colors.textPrimary, fontFamily: fonts.semiBold, fontSize: fontSizes.label }]}>Ominx mall, Office 212, Magarpatta.</Text>
+        <Text style={[styles.locationText, { color: colors.textPrimary, fontFamily: fonts.semiBold, fontSize: fontSizes.label }]}>{address}</Text>
       </View>
 
       <Text style={[styles.heading, { color: colors.textPrimary, fontFamily: fonts.bold, fontSize: fontSizes.title }]}>Just for you, {userName}</Text>
@@ -40,23 +43,23 @@ const KitchenResult = ({ navigation }) => {
       <Animated.View style={[styles.centeredCardWrapper, { opacity: cardAnim, transform: [{ translateY }] }]}>
         <Image source={require('../../assets/thali.png')} style={styles.thaliImage} resizeMode="cover" />
         <View style={styles.card}>
-          <Text style={[styles.kitchenName, { color: colors.textPrimary, fontFamily: fonts.bold, fontSize: fontSizes.subtitle }]}>Dehwar mess</Text>
+          <Text style={[styles.kitchenName, { color: colors.textPrimary, fontFamily: fonts.bold, fontSize: fontSizes.subtitle }]}>{messName}</Text>
           <View style={styles.row}>
             <Text style={[styles.kitchenDetails, { fontFamily: fonts.semiBold, fontSize: fontSizes.label }]}>Home Chef | Pause Anytime | </Text>
             <Image source={require('../../assets/fssai.png')} style={styles.fssaiLogo} resizeMode="contain" />
           </View>
           <Text style={[styles.kitchenDesc, { fontFamily: fonts.semiBold, fontSize: fontSizes.label }]}>
-            Every tiffin from Dehwar's Mess brings soft rotis, fresh dal, and a touch of home — light on oil, big on comfort.
+            Every tiffin from {messName} brings soft rotis, fresh dal, and a touch of home — light on oil, big on comfort.
           </Text>
           <View style={styles.badge}>
-            <Text style={[styles.badgeText, { fontFamily: fonts.bold }]}>Special Veg Thali</Text>
+            <Text style={[styles.badgeText, { fontFamily: fonts.bold }]}>{tiffinType.charAt(0).toUpperCase() + tiffinType.slice(1).toLowerCase()} Veg Thali</Text>
           </View>
         </View>
       </Animated.View>
 
       <View style={styles.buttonRow}>
-        <Button text="Select" style={styles.selectBtn} onPress={() => navigation.navigate('SpecialVegThali')} />
-        <Button text="Explore other" style={styles.exploreBtn} textStyle={styles.exploreBtnText} onPress={() => navigation.navigate('MessScreen')} />
+        <Button text="Select" style={styles.selectBtn} onPress={() => navigation.navigate('SpecialVegThali',{tiffinId})} />
+        <Button text="Explore other" style={styles.exploreBtn} textStyle={styles.exploreBtnText} onPress={() => navigation.navigate('MessScreen',{messId})} />
       </View>
 
       <TouchableOpacity style={styles.skipContainer}>
