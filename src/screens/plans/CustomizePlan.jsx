@@ -13,6 +13,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useTheme } from '../../context/ThemeContext';
 import Button from '../../components/common/Button';
 import { fontSizes, spacing } from '../../styles/styles';
+import userStore from '../../store/userStore';
 
 const { height } = Dimensions.get('window');
 
@@ -22,8 +23,8 @@ const CustomizePlan = ({ navigation }) => {
   const translateYAnim = useRef(new Animated.Value(40)).current;
   const [lunchChecked, setLunchChecked] = useState(true);
   const [dinnerChecked, setDinnerChecked] = useState(true);
-  const userName = 'Tabish';
-
+  const userName = userStore.getState().name
+  const [isSubmitting,setIsSubmitting] = useState(false);
   useEffect(() => {
     Animated.parallel([
       Animated.timing(fadeAnim, {
@@ -39,6 +40,24 @@ const CustomizePlan = ({ navigation }) => {
     ]).start();
   }, [fadeAnim, translateYAnim]);
 
+  const handleSubmit = ()=>{
+    setIsSubmitting(true);
+    let formdata = {};
+    if(lunchChecked === true && dinnerChecked !== true){
+      formdata = {
+        daySlot:"AFTERNOON",
+      }
+    }else if(lunchChecked !== true && dinnerChecked === true){
+      formdata = {
+        daySlot:"EVENING",
+      }
+    }else if(lunchChecked === true && dinnerChecked === true){
+      formdata = {
+        daySlot:"AFTERNOON+EVENING",
+      }
+    }
+    navigation.navigate('SelectDuration',{formdata});
+  }
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
       <StatusBar barStyle={colors.background === '#101010' ? 'light-content' : 'dark-content'} />
@@ -211,7 +230,8 @@ const CustomizePlan = ({ navigation }) => {
           {/* Continue Button */}
           <Button
             text="Continue"
-            onPress={() => navigation.navigate('SelectDuration')}
+            onPress={handleSubmit}
+            disabled={isSubmitting}
             style={{
               backgroundColor: '#FF6F3C',
               borderRadius: 30,

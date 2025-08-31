@@ -8,4 +8,7 @@ export const APIS = {
     verifyOtp: API_URL + "/users/verify-otp",
     addName: API_URL+"/users/add-name",
     addAddress: API_URL+"/users/add-address",
+    recommend:API_URL+"/recommend",
+    tiffins:API_URL+"/tiffins",
+    mess:API_URL+"/mess",
 };

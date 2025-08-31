@@ -1,12 +1,33 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Animated, Easing } from 'react-native';
 import { useTheme } from '../../context/ThemeContext';
-
-const KitchenMatching = ({ navigation }) => {
+import { Mutation, useMutation } from '@tanstack/react-query';
+import useRecommendation from '../../services/useRecommendation';
+import { formatAddress } from '../../utils/formatAddress';
+import userStore from '../../store/userStore';
+const KitchenMatching = ({ navigation,route }) => {
   const { colors, theme } = useTheme();
   const tossAnim = useRef(new Animated.Value(0)).current;
   const progress = useRef(new Animated.Value(0)).current;
-
+  const {getRecommendation} = useRecommendation();
+  const {formdata}=route?.params;
+  const name = userStore.getState().name;
+    const mutation = useMutation({
+    mutationFn: getRecommendation,
+    onSuccess: async (recommendation) => {
+      const responseData = {
+        messName: recommendation.data.mess.mess_name||"",
+        address: formatAddress(recommendation.data.mess.address),
+        tiffinType:recommendation.data.tiffin.type,
+        tiffin:recommendation.data.tiffin,
+      };
+      navigation.replace('KitchenResult',{responseData})
+    },
+    onError: (err) => {
+      console.error("Transaction Failed.",err);
+      toast.error("");
+    },
+  });
   useEffect(() => {
     // Looping toss animation
     Animated.loop(
@@ -34,7 +55,7 @@ const KitchenMatching = ({ navigation }) => {
       useNativeDriver: false,
     }).start(({ finished }) => {
       if (finished && navigation) {
-        navigation.replace('KitchenResult');
+        mutation.mutate(formdata);
       }
     });
   }, [tossAnim, progress, navigation]);
@@ -84,7 +105,7 @@ const KitchenMatching = ({ navigation }) => {
           <Animated.View style={[styles.progressBarFill, { width: progressBarWidth }]} />
         </View>
       </View>
-      <Text style={[styles.title, { color: colors.textPrimary }]}>Hang tight, Tabish !</Text>
+      <Text style={[styles.title, { color: colors.textPrimary }]}>Hang tight, {name} !</Text>
       <Text style={[styles.subtitle, { color: theme === 'dark' ? colors.textPrimary : '#888' }]}>
         We're Finding kitchens made for you
       </Text>

@@ -33,7 +33,7 @@ const saveOptions = [
 const ManualLocation = ({ navigation, route }) => {
   const { colors } = useTheme();
   const name = route?.params?.name || 'User';
-  const {longitude , latitude} = route?.params?.coordinates ;
+  const {longitude , latitude} = route?.params?.coordinates || {};
   const hasLocationPermission = route?.params?.hasLocationPermission || false;
   
   const [house, setHouse] = useState('');
